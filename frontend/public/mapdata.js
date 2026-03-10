@@ -11,7 +11,7 @@ var simplemaps_usmap_mapdata = {
 
     //State defaults
     state_description: "State Description",
-    state_color: "#88A4BC",
+    state_color: "#292f3e",
     state_url: "",
     border_size: 1.5,
     all_states_inactive: "yes",
