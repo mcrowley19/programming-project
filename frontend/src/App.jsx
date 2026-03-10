@@ -6,7 +6,7 @@ function App() {
   }, []);
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-[#13162c] flex justify-center items-start p-10">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-[#13162c] justify-center items-start p-10 w-screen display:block">
         <div className="pointer-events-auto mx-auto w-full max-w-[1600px]">
           <header
             className="flex min-w-max items-center gap-4 m-2 px-6 py-3
@@ -32,7 +32,9 @@ function App() {
             <nav className="flex flex-1 items-center justify-center gap-1"></nav>
           </header>
         </div>
-        <div className="" id="map"></div>
+        <div className="flex justify-center items-center w-screen h-screen ">
+          <div id="map"></div>
+        </div>
       </div>
     </>
   );
