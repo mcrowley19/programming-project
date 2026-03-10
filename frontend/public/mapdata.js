@@ -47,7 +47,7 @@ var simplemaps_usmap_mapdata = {
 
     //Advanced settings
     div: "map",
-    auto_load: "yes",
+    auto_load: "no",
     url_new_tab: "yes",
     images_directory: "/static/lib/simplemaps/map_images/",
     fade_time: 0.1,
