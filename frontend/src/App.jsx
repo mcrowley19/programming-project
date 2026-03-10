@@ -31,8 +31,8 @@ function App() {
 
             <nav className="flex flex-1 items-center justify-center gap-1"></nav>
           </header>
-          <div id="map"></div>
         </div>
+        <div className="" id="map"></div>
       </div>
     </>
   );

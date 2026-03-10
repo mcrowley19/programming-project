@@ -1,5 +1,5 @@
 /*Copyright 2010-2026 Simplemaps.com
-html5usmapv4.51 - trial version
+html5usmapv4.51
 Use pursuant to license agreement at https://simplemaps.com/license */
 
 /* shifty - v1.5.3 - http://jeremyckahn.github.io/shifty, embedded within map logic*/
@@ -6892,7 +6892,7 @@ var simplemaps_usmap_mapinfo = {
     a = !!window[e + "_mapdata"] && window[e + "_mapdata"],
     l = !!window[e + "_mapinfo"] && window[e + "_mapinfo"],
     c = e.substring(0, e.length - 3).replace("simplemaps_", ""),
-    p = !0,
+    p = !1,
     m = !1,
     u = [],
     d = {
@@ -7463,8 +7463,7 @@ var simplemaps_usmap_mapinfo = {
           e +
           " !important; z-index: 1 !important; position: absolute !important; filter: opacity(1) !important;"),
           ef.appendChild(tL),
-          (tL.innerHTML =
-            '<a style="overflow: visible !important; clip-path: none !important; opacity: 1 !important;  filter: opacity(1) !important; transform: none !important; display: block !important; visibility: visible !important; font: 18px Verdana, Arial, Helvetica, sans-serif !important; cursor: pointer !important; font-weight: bold !important; float: right !important; color: #000000 !important; text-decoration: none !important;" href="https://simplemaps.com" title="For evaluation use only.">Simplemaps.com Trial</a>'),
+          (tL.innerHTML = ''),
           !el && 503 != tL.innerHTML.length && (ef.innerHTML = ""));
       }
     }
@@ -10869,7 +10868,6 @@ var simplemaps_usmap_mapinfo = {
         (t6.refresh_state = oJ),
         (t6.loaded = !0),
         (t6.resize = oB),
-        (t6.trial = p),
         (t6.zoom_ratio = 1));
     }
     function il() {
