@@ -33,7 +33,7 @@ function App() {
           </header>
         </div>
         <div className="flex justify-center items-center w-screen h-screen ">
-          <div id="map"></div>
+          <div id="map" className="scale-150"></div>
         </div>
       </div>
     </>
