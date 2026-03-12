@@ -12,7 +12,7 @@ function App() {
             rounded-2xl
             bg-white/10
             backdrop-blur-[10px]
-            border border-white/20 w-full max-w-[400px] mx-auto"
+            border border-white/20 w-full"
         >
           <div className="flex items-center gap-3">
             <button
