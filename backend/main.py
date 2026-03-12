@@ -16,8 +16,14 @@ class Flight:
         self.DEP_TIME = DEP_TIME
         self.CRS_ARR_TIME = CRS_ARR_TIME
         self.ARR_TIME = ARR_TIME
-        self.CANCELLED = CANCELLED
-        self.DIVERTED = DIVERTED
+        if CANCELLED == 1.00:
+            self.CANCELLED = True
+        else:
+            self.CANCELLED = False
+        if DIVERTED == 1.00:
+            self.DIVERTED = True
+        else:
+            self.DIVERTED = False
         self.DISTANCE = DISTANCE
     
     def flightDetails(self):
@@ -39,21 +45,27 @@ with open('backend/data/flightData.csv') as csvfile:
         except Exception as e:
             print(f"Error with {flightCounter}: {e}")
 
-# for flight in flightList:
-#     print(f'{flight.flightDetails()}\n')
+for flight in flightList:
+    print(f'{flight.flightDetails()}\n')
+
+    
 def airport_origin_filter(airport_code):
     filteredFlights = []
     for flight in flightList:
         if flight.ORIGIN == f" '{airport_code}'":
             filteredFlights.append(flight)
     return filteredFlights
-def cancel_status(state):
-    cancelledState = []
+
+
+def cancel_filter(state):
+    cancelledFlights = []
     for flight in flightList:
         if flight.CANCELLED == f" '{state}'":
-            cancelledState.append(flight)
-    return cancelledState
-for flight in airport_origin_filter('ATL'):
+            cancelledFlights.append(flight)
+    return cancelledFlights
+
+
+#for flight in airport_origin_filter('ATL'):
     print(f'{flight.flightDetails()}\n')
-for flight in cancel_status('0.00'):
+#for flight in cancel_filter(True):
     print(f'{flight.flightDetails()}\n')
