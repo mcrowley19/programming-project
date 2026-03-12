@@ -2462,16 +2462,14 @@ Use pursuant to license agreement at https://simplemaps.com/license */
             a++
           )
             n.push(
-              i
-                .path(s)
-                .attr({
-                  stroke: e.color,
-                  fill: e.fill ? e.color : "none",
-                  "stroke-linejoin": "round",
-                  "stroke-linecap": "round",
-                  "stroke-width": +((e.width / r) * a).toFixed(3),
-                  opacity: +(e.opacity / r).toFixed(3),
-                }),
+              i.path(s).attr({
+                stroke: e.color,
+                fill: e.fill ? e.color : "none",
+                "stroke-linejoin": "round",
+                "stroke-linecap": "round",
+                "stroke-width": +((e.width / r) * a).toFixed(3),
+                opacity: +(e.opacity / r).toFixed(3),
+              }),
             );
           return n.insertBefore(this).translate(e.offsetx, e.offsety);
         }));
@@ -7463,7 +7461,7 @@ var simplemaps_usmap_mapinfo = {
           e +
           " !important; z-index: 1 !important; position: absolute !important; filter: opacity(1) !important;"),
           ef.appendChild(tL),
-          (tL.innerHTML = ''),
+          (tL.innerHTML = ""),
           !el && 503 != tL.innerHTML.length && (ef.innerHTML = ""));
       }
     }
@@ -10019,26 +10017,22 @@ var simplemaps_usmap_mapinfo = {
                 eq.push(t),
                 eq.click(tz));
             } else {
-              var n = (eR = Raphael(ed, o, r))
-                  .path(d.rounded_box)
-                  .attr({
-                    fill: eZ,
-                    "stroke-width": 1,
-                    stroke: eG,
-                    "stroke-opacity": te,
-                    "fill-opacity": 0,
-                    cursor: "pointer",
-                  }),
-                s = eR
-                  .path(d.arrow)
-                  .attr({
-                    stroke: eG,
-                    "stroke-width": 1.5,
-                    "stroke-opacity": 1,
-                    fill: eZ,
-                    "fill-opacity": 1,
-                    cursor: "pointer",
-                  });
+              var n = (eR = Raphael(ed, o, r)).path(d.rounded_box).attr({
+                  fill: eZ,
+                  "stroke-width": 1,
+                  stroke: eG,
+                  "stroke-opacity": te,
+                  "fill-opacity": 0,
+                  cursor: "pointer",
+                }),
+                s = eR.path(d.arrow).attr({
+                  stroke: eG,
+                  "stroke-width": 1.5,
+                  "stroke-opacity": 1,
+                  fill: eZ,
+                  "fill-opacity": 1,
+                  cursor: "pointer",
+                });
               ((eq = eP.set()).push(n, s),
                 eq.transform("S" + tn + "," + tn + ",0,0 T0,0"));
             }
@@ -10051,49 +10045,41 @@ var simplemaps_usmap_mapinfo = {
                   var t = d.plus,
                     o = d.minus,
                     r = d.rounded_box,
-                    n = eW
-                      .path(r)
-                      .attr({
-                        fill: K,
-                        "stroke-width": 1,
-                        stroke: e0,
-                        "stroke-opacity": 1,
-                        "fill-opacity": e5,
-                        cursor: "pointer",
-                      }),
-                    s = eW
-                      .path(t)
-                      .attr({
-                        "stroke-width": 0,
-                        "stroke-opacity": 0,
-                        fill: e0,
-                        "fill-opacity": 1,
-                        opacity: 1,
-                        cursor: "pointer",
-                      });
+                    n = eW.path(r).attr({
+                      fill: K,
+                      "stroke-width": 1,
+                      stroke: e0,
+                      "stroke-opacity": 1,
+                      "fill-opacity": e5,
+                      cursor: "pointer",
+                    }),
+                    s = eW.path(t).attr({
+                      "stroke-width": 0,
+                      "stroke-opacity": 0,
+                      fill: e0,
+                      "fill-opacity": 1,
+                      opacity: 1,
+                      cursor: "pointer",
+                    });
                   (eH = eP.set()).push(n, s);
                   var a = "S" + tn + "," + tn + ",0,0 T0,0";
                   eH.transform(a);
-                  var l = eW
-                      .path(r)
-                      .attr({
-                        fill: K,
-                        "stroke-width": 1,
-                        stroke: e0,
-                        "stroke-opacity": 1,
-                        "fill-opacity": e5,
-                        cursor: "pointer",
-                      }),
-                    c = eW
-                      .path(o)
-                      .attr({
-                        "stroke-width": 0,
-                        "stroke-opacity": 0,
-                        fill: e0,
-                        "fill-opacity": 1,
-                        opacity: 1,
-                        cursor: "pointer",
-                      });
+                  var l = eW.path(r).attr({
+                      fill: K,
+                      "stroke-width": 1,
+                      stroke: e0,
+                      "stroke-opacity": 1,
+                      "fill-opacity": e5,
+                      cursor: "pointer",
+                    }),
+                    c = eW.path(o).attr({
+                      "stroke-width": 0,
+                      "stroke-opacity": 0,
+                      fill: e0,
+                      "fill-opacity": 1,
+                      opacity: 1,
+                      cursor: "pointer",
+                    });
                   (eV = eP.set()).push(l, c);
                   var a = "S" + tn + "," + tn + ",0,0 T0," + (e9 + to);
                   function p(e, t) {
@@ -10587,9 +10573,7 @@ var simplemaps_usmap_mapinfo = {
             (function e() {
               (ev.style.setProperty("right", "0em"),
                 ev.style.setProperty("top", "0em"));
-              var t =
-                  void 0 === a.navigate_title ? "Navigate" : a.navigate_title,
-                o = void 0 === a.keyboard_omit ? "" : a.keyboard_omit;
+
               if (!(o.indexOf("navigat") > -1)) {
                 var r = document.createElement("select");
                 (r.options.add(new Option(t, "-1")),
