@@ -39,5 +39,5 @@ with open('backend/data/flightData.csv') as csvfile:
         except Exception as e:
             print(f"Error with {flightCounter}: {e}")
 
-for flight in flightList:
-    print(f'{flight.flightDetails()}\n')
+# for flight in flightList:
+#     print(f'{flight.flightDetails()}\n')
