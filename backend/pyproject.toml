@@ -1,9 +1,11 @@
 [project]
 name = "backend"
 version = "0.1.0"
-description = "Add your description here"
+description = "Backend for the project"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "pandas>=3.0.1",
+    "plotly>=6.6.0",
+    "numpy>=2.4.3",
 ]
