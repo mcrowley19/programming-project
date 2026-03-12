@@ -19,31 +19,23 @@ var simplemaps_usmap_mapdata = {
 
     //Location defaults
     location_description: "Add location markers using latitude and longitude!",
-    location_color: "#2041D4",
-    location_opacity: 0.8,
+    location_color: "#d42020",
+    location_opacity: 1,
     location_url: "",
-    location_size: 25,
+    location_size: 15,
     location_image_source: "frog.png",
     location_border_color: "#FFFFFF",
     location_border: 2,
     all_locations_inactive: "no",
     all_locations_hidden: "no",
+    location_type: "circle",
 
     //Label defaults
     label_color: "#d5ddec",
     label_size: 22,
     label_font: "Arial",
-    hide_labels: "yes",
     hide_eastern_labels: "no",
     manual_zoom: "no",
-    back_image: "no",
-    initial_back: "no",
-    initial_zoom: -1,
-    initial_zoom_solo: "no",
-    region_opacity: 1,
-    zoom_out_incrementally: "yes",
-    zoom_percentage: 0.99,
-    zoom_time: 0.5,
 
     //Advanced settings
     div: "map",
@@ -234,10 +226,26 @@ var simplemaps_usmap_mapdata = {
       hide: "yes",
     },
   },
-  locations: {},
-  labels: {},
-  legend: {
-    entries: [],
+  locations: {
+    "0": {
+      name: "New York",
+      lat: "40.71",
+      lng: "-74.0059731"
+    },
+    "1": {
+      name: "Chicago, IL",
+      lat: "41.9288",
+      lng: "-87.6315",
+    },
+    "3": {
+      lat: 61.218,
+      lng: -149.858,
+      name: "Anchorage"
+    }
   },
   regions: {},
+  labels: {},
+  legend: {
+    entries: []
+  }
 };
