@@ -32,7 +32,7 @@ function App() {
             <nav className="flex flex-1 items-center justify-center gap-1"></nav>
           </header>
         </div>
-        <div className="flex justify-center pt-80 w-screen h-screen ">
+        <div className="flex justify-center mt-120 w-screen h-screen ">
           <div id="map" className="scale-200"></div>
         </div>
       </div>
