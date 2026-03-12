@@ -41,3 +41,20 @@ with open('backend/data/flightData.csv') as csvfile:
 
 for flight in flightList:
     print(f'{flight.flightDetails()}\n')
+
+def airport_origin_filter(airport_code):
+    filteredFlights = []
+    for flight in flightList:
+        if flight.ORIGIN == f" '{airport_code}'":
+            filteredFlights.append(flight)
+    return filteredFlights
+def cancel_status(state):
+    cancelledState = []
+    for flight in flightList:
+        if flight.CANCELLED == f" '{state}'":
+            cancelledState.append(flight)
+    return cancelledState
+for flight in airport_origin_filter('ATL'):
+    print(f'{flight.flightDetails()}\n')
+for flight in cancel_status('0.00'):
+    print(f'{flight.flightDetails()}\n')
