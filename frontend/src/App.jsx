@@ -6,13 +6,12 @@ function App() {
   }, []);
   return (
     <>
-      <div className="min-h-screen bg-linear-to-br from-gray-900 to-[#13162c] justify-center items-start p-10 w-screen display:block">
+      <div className="min-h-screen bg-linear-to-br from-gray-900 to-[#13162c] justify-center items-start p-2 w-screen display:block">
         <div className="pointer-events-auto mx-auto w-full max-w-400">
           <header
-            className="flex min-w-max items-center gap-4 m-2 px-6 py-3
+            className="flex min-w-max items-center gap-2 m-2 px-3 py-1
             rounded-2xl
             bg-white/10
-            shadow-[0_4px_30px_rgba(0,0,0,0.5)]
             backdrop-blur-[10px]
             border border-white/20"
           >
@@ -32,8 +31,8 @@ function App() {
             <nav className="flex flex-1 items-center justify-center gap-1"></nav>
           </header>
         </div>
-        <div className="flex justify-center mt-120 w-screen h-screen ">
-          <div id="map" className="scale-200"></div>
+        <div className="flex justify-center mt-140 w-screen h-screen ">
+          <div id="map" className="scale-220"></div>
         </div>
       </div>
     </>
