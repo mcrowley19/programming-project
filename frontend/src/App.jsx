@@ -6,11 +6,11 @@ function App() {
   }, []);
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-[#13162c] justify-center items-start p-10 w-screen display:block">
-        <div className="pointer-events-auto mx-auto w-full max-w-[1600px]">
+      <div className="min-h-screen bg-linear-to-br from-gray-900 to-[#13162c] justify-center items-start p-10 w-screen display:block">
+        <div className="pointer-events-auto mx-auto w-full max-w-400">
           <header
             className="flex min-w-max items-center gap-4 m-2 px-6 py-3
-            rounded-[16px]
+            rounded-2xl
             bg-white/10
             shadow-[0_4px_30px_rgba(0,0,0,0.5)]
             backdrop-blur-[10px]
