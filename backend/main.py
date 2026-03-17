@@ -51,11 +51,11 @@ def load_flights():
         flightCounter = 0
         for row in reader:
             flightCounter += 1
-            flightDataString = str(row).strip('[]')
+            flightDataString = str(row).strip('[]').replace("\'", "")
             try:
                 FL_DATE,MKT_CARRIER,MKT_CARRIER_FL_NUM,ORIGIN,ORIGIN_CITY_NAME, OriginCityExt, ORIGIN_STATE_ABR,ORIGIN_WAC,DEST,DEST_CITY_NAME, DestCityExt, DEST_STATE_ABR,DEST_WAC,CRS_DEP_TIME,DEP_TIME,CRS_ARR_TIME,ARR_TIME,CANCELLED,DIVERTED,DISTANCE = flightDataString.split(',')
                 # OriginCityExt and DestCityExt are for the seperated state parts of the names because of the commas inbetween them and the city names.
-                tempFlight = Flight(FL_DATE,MKT_CARRIER,MKT_CARRIER_FL_NUM,ORIGIN,ORIGIN_CITY_NAME + ',' + OriginCityExt,ORIGIN_STATE_ABR,ORIGIN_WAC,DEST,DEST_CITY_NAME + ',' + DestCityExt,DEST_STATE_ABR,DEST_WAC,CRS_DEP_TIME,DEP_TIME,CRS_ARR_TIME,ARR_TIME,CANCELLED.strip().strip("\'"),DIVERTED.strip().strip("\'"),DISTANCE)
+                tempFlight = Flight(FL_DATE,MKT_CARRIER,MKT_CARRIER_FL_NUM,ORIGIN,ORIGIN_CITY_NAME + ',' + OriginCityExt,ORIGIN_STATE_ABR,ORIGIN_WAC,DEST,DEST_CITY_NAME + ',' + DestCityExt,DEST_STATE_ABR,DEST_WAC,CRS_DEP_TIME,DEP_TIME,CRS_ARR_TIME,ARR_TIME,CANCELLED.strip(),DIVERTED.strip(),DISTANCE)
                 flightList.append(tempFlight)
             except Exception as e:
                 print(f"Error with {flightCounter}: {e}")
