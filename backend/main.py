@@ -1,9 +1,14 @@
 import csv
+from pathlib import Path
 from flask import Flask
 from flask import request
+from flask_cors import CORS
 app = Flask(__name__)
 
+CORS(app)
+
 flightList = []
+DATA_FILE = Path(__file__).resolve().parent / 'data' / 'flightData.csv'
 class Flight:
     def __init__(self, FL_DATE, MKT_CARRIER, MKT_CARRIER_FL_NUM, ORIGIN, ORIGIN_CITY_NAME, ORIGIN_STATE_ABR, ORIGIN_WAC, DEST, DEST_CITY_NAME, DEST_STATE_ABR, DEST_WAC, CRS_DEP_TIME, DEP_TIME, CRS_ARR_TIME, ARR_TIME, CANCELLED, DIVERTED, DISTANCE):
         self.FL_DATE = FL_DATE
@@ -35,7 +40,10 @@ class Flight:
         return f'Flight Date: {self.FL_DATE}\nMarket Carrier: {self.MKT_CARRIER}\nMarket Carrier Flight Number: {self.MKT_CARRIER_FL_NUM}\nOrigin: {self.ORIGIN}\nOrigin City Name: {self.ORIGIN_CITY_NAME}\nOrigin State Abbreviation: {self.ORIGIN_STATE_ABR}\nOrigin WAC: {self.ORIGIN_WAC}\nDestination: {self.DEST}\nDestination City Name: {self.DEST_CITY_NAME}\nDestination State Abbreviation: {self.DEST_STATE_ABR}\nDestination WAC: {self.DEST_WAC}\nCRS Departure Time: {self.CRS_DEP_TIME}\nDeparture Time: {self.DEP_TIME}\nCRS Arrival Time: {self.CRS_ARR_TIME}\nArrival Time: {self.ARR_TIME}\nCancelled: {self.CANCELLED}\nDiverted: {self.DIVERTED}\nDistance: {self.DISTANCE}\n'
 
 def load_flights():
-    with open('backend/data/flightData.csv') as csvfile:
+    if flightList:
+        return
+
+    with open(DATA_FILE) as csvfile:
         reader = csv.reader(csvfile)
         next(reader) # skips the first line of the CSV file
         flightCounter = 0
@@ -81,7 +89,15 @@ def main():
 
 @app.route('/testAccess')
 def testAccess():
+    load_flights()
+    if not flightList:
+        return 'No flights loaded.', 500
     return flightList[0].flightDetails()
+
+
+@app.route('/')
+def home():
+    return 'Flask API is running. Try /testAccess'
 
 if __name__ == '__main__':
     main()

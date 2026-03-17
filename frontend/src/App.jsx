@@ -1,9 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   useEffect(() => {
     window.simplemaps_usmap.load();
   }, []);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/testAccess")
+    .then((res) => res.text())
+    .then((text) => setMessage(text))
+    .catch(() => setMessage("Backend not connected"))
+  }, []);
+
+  const [message, setMessage] = useState("Loading backend...");
+
   return (
     <>
       <div className="h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-gradient-to-br from-gray-900 to-[#13162c]">
@@ -29,6 +39,9 @@ function App() {
 
           <nav className="flex flex-1 items-center justify-center gap-1"></nav>
         </header>
+        <div className="mx-2 mb-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs text-white/90 whitespace-pre-line">
+          {message}
+        </div>
         <div className="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
           <div id="map" className="scale-[2.2] origin-center"></div>
         </div>
