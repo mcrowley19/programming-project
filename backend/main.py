@@ -78,16 +78,18 @@ def cancel_filter(state):
     return cancelledFlights
 
 
+def day_filter(day):
+    filteredFlights = []
+    for flight in flightList:
+        if flight.FL_DATE.split('/')[1] == day:
+            filteredFlights.append(flight)
+    return filteredFlights
+
+
 def main():
-    load_flights()
-
-
-    cancelledList = cancel_filter(True)
-    
-    for flight in cancelledList:
-        print(f'{flight.flightDetails()}')
-
-    print(len(cancelledList))
+    load_flights(0)
+    for flight in flightList:
+        flight.flightDetails()
 
 
 @app.route('/testAccess')
@@ -97,6 +99,13 @@ def testAccess():
         return 'No flights loaded.', 500
     return flightList[0].flightDetails()
 
+
+@app.route('/day1')
+def day1():
+    load_flights()
+    day1Flights = day_filter('01')
+    return day1Flights
+    
 
 @app.route('/')
 def home():
