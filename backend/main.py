@@ -26,11 +26,13 @@ class Flight:
         self.DEP_TIME = DEP_TIME
         self.CRS_ARR_TIME = CRS_ARR_TIME
         self.ARR_TIME = ARR_TIME
-        if CANCELLED == 1.00:
+        if CANCELLED == "1.00":
             self.CANCELLED = True
         else:
             self.CANCELLED = False
-        if DIVERTED == 1.00:
+
+
+        if DIVERTED == "0.00":
             self.DIVERTED = True
         else:
             self.DIVERTED = False
@@ -53,7 +55,7 @@ def load_flights():
             try:
                 FL_DATE,MKT_CARRIER,MKT_CARRIER_FL_NUM,ORIGIN,ORIGIN_CITY_NAME, OriginCityExt, ORIGIN_STATE_ABR,ORIGIN_WAC,DEST,DEST_CITY_NAME, DestCityExt, DEST_STATE_ABR,DEST_WAC,CRS_DEP_TIME,DEP_TIME,CRS_ARR_TIME,ARR_TIME,CANCELLED,DIVERTED,DISTANCE = flightDataString.split(',')
                 # OriginCityExt and DestCityExt are for the seperated state parts of the names because of the commas inbetween them and the city names.
-                tempFlight = Flight(FL_DATE,MKT_CARRIER,MKT_CARRIER_FL_NUM,ORIGIN,ORIGIN_CITY_NAME + ',' + OriginCityExt,ORIGIN_STATE_ABR,ORIGIN_WAC,DEST,DEST_CITY_NAME + ',' + DestCityExt,DEST_STATE_ABR,DEST_WAC,CRS_DEP_TIME,DEP_TIME,CRS_ARR_TIME,ARR_TIME,CANCELLED,DIVERTED,DISTANCE)
+                tempFlight = Flight(FL_DATE,MKT_CARRIER,MKT_CARRIER_FL_NUM,ORIGIN,ORIGIN_CITY_NAME + ',' + OriginCityExt,ORIGIN_STATE_ABR,ORIGIN_WAC,DEST,DEST_CITY_NAME + ',' + DestCityExt,DEST_STATE_ABR,DEST_WAC,CRS_DEP_TIME,DEP_TIME,CRS_ARR_TIME,ARR_TIME,CANCELLED.strip().strip("\'"),DIVERTED.strip().strip("\'"),DISTANCE)
                 flightList.append(tempFlight)
             except Exception as e:
                 print(f"Error with {flightCounter}: {e}")
@@ -79,12 +81,13 @@ def cancel_filter(state):
 def main():
     load_flights()
 
-    for flight in airport_origin_filter('ATL'):
-        print(f'{flight.flightDetails()}')
+
     cancelledList = cancel_filter(True)
-    print(len(cancelledList))
+    
     for flight in cancelledList:
         print(f'{flight.flightDetails()}')
+
+    print(len(cancelledList))
 
 
 @app.route('/testAccess')
