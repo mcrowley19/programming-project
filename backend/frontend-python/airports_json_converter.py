@@ -29,8 +29,8 @@ lat_list = df["LONGITUDE"].tolist()
 
 for iata, long, lat in zip(iata_list, long_list, lat_list):
     current_airport = {
-        "lat":lat,
-        "lng": long,
+        "lat": round(lat, 2),
+        "lng": round(long, 2),
         "name": iata
         }
     airports_dict[iata] = current_airport
