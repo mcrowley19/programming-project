@@ -1,4 +1,9 @@
 import csv
+from flask import Flask
+from flask import request
+app = Flask(__name__)
+
+flightList = []
 class Flight:
     def __init__(self, FL_DATE, MKT_CARRIER, MKT_CARRIER_FL_NUM, ORIGIN, ORIGIN_CITY_NAME, ORIGIN_STATE_ABR, ORIGIN_WAC, DEST, DEST_CITY_NAME, DEST_STATE_ABR, DEST_WAC, CRS_DEP_TIME, DEP_TIME, CRS_ARR_TIME, ARR_TIME, CANCELLED, DIVERTED, DISTANCE):
         self.FL_DATE = FL_DATE
@@ -27,13 +32,12 @@ class Flight:
         self.DISTANCE = DISTANCE
     
     def flightDetails(self):
-        return f'Flight Date: {self.FL_DATE}\nMarket Carrier: {self.MKT_CARRIER}\nMarket Carrier Flight Number: {self.MKT_CARRIER_FL_NUM}\nOrigin: {self.ORIGIN}\nOrigin City Name: {self.ORIGIN_CITY_NAME}\nOrigin State Abbreviation: {self.ORIGIN_STATE_ABR}\nOrigin WAC: {self.ORIGIN_WAC}\nDestination: {self.DEST}\nDestination City Name: {self.DEST_CITY_NAME}\nDestination State Abbreviation: {self.DEST_STATE_ABR}\nDestination WAC: {self.DEST_WAC}\nCRS Departure Time: {self.CRS_DEP_TIME}\nDeparture Time: {self.DEP_TIME}\nCRS Arrival Time: {self.CRS_ARR_TIME}\nArrival Time: {self.ARR_TIME}\nCancelled: {self.CANCELLED}\nDiverted: {self.DIVERTED}\nDistance: {self.DISTANCE}'
+        return f'Flight Date: {self.FL_DATE}\nMarket Carrier: {self.MKT_CARRIER}\nMarket Carrier Flight Number: {self.MKT_CARRIER_FL_NUM}\nOrigin: {self.ORIGIN}\nOrigin City Name: {self.ORIGIN_CITY_NAME}\nOrigin State Abbreviation: {self.ORIGIN_STATE_ABR}\nOrigin WAC: {self.ORIGIN_WAC}\nDestination: {self.DEST}\nDestination City Name: {self.DEST_CITY_NAME}\nDestination State Abbreviation: {self.DEST_STATE_ABR}\nDestination WAC: {self.DEST_WAC}\nCRS Departure Time: {self.CRS_DEP_TIME}\nDeparture Time: {self.DEP_TIME}\nCRS Arrival Time: {self.CRS_ARR_TIME}\nArrival Time: {self.ARR_TIME}\nCancelled: {self.CANCELLED}\nDiverted: {self.DIVERTED}\nDistance: {self.DISTANCE}\n'
 
 def load_flights():
-    flightList = []
     with open('backend/data/flightData.csv') as csvfile:
         reader = csv.reader(csvfile)
-        next(reader)
+        next(reader) # skips the first line of the CSV file
         flightCounter = 0
         for row in reader:
             flightCounter += 1
@@ -45,11 +49,9 @@ def load_flights():
                 flightList.append(tempFlight)
             except Exception as e:
                 print(f"Error with {flightCounter}: {e}")
-    
-    return flightList
 
 
-def airport_origin_filter(flightList, airport_code):
+def airport_origin_filter(airport_code):
     filteredFlights = []
     for flight in flightList:
         if flight.ORIGIN == f" '{airport_code}'":
@@ -57,24 +59,29 @@ def airport_origin_filter(flightList, airport_code):
     return filteredFlights
 
 
-def cancel_filter(flightList, state):
+def cancel_filter(state):
     cancelledFlights = []
     for flight in flightList:
         if flight.CANCELLED == state:
             cancelledFlights.append(flight)
+            print(f'{flight.flightDetails()}')
     return cancelledFlights
 
 
-
-
 def main():
-    flightList = load_flights()
+    load_flights()
 
-    for flight in airport_origin_filter(flightList, 'ATL'):
-        print(f'{flight.flightDetails()}\n')
+    for flight in airport_origin_filter('ATL'):
+        print(f'{flight.flightDetails()}')
+    cancelledList = cancel_filter(True)
+    print(len(cancelledList))
+    for flight in cancelledList:
+        print(f'{flight.flightDetails()}')
 
-    #for flight in cancel_filter(flightList, True):
-    #    print(f'{flight.flightDetails()}\n')
+
+@app.route('/testAccess')
+def testAccess():
+    return flightList[0].flightDetails()
 
 if __name__ == '__main__':
     main()
