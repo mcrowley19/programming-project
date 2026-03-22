@@ -1,5 +1,6 @@
 import csv
 from pathlib import Path
+import pandas as pd
 from flask import Flask
 from flask import request
 from flask_cors import CORS
@@ -84,10 +85,25 @@ def day_filter(day):
         if flight.FL_DATE.split('/')[1] == day:
             filteredFlights.append(flight)
     return filteredFlights
+def late_flights(df):
+    df['LATE'] = df['CRS_ARR_TIME'] < df['ARR_TIME']
+    df["ON_TIME"] = (df['CRS_ARR_TIME'] >= df['ARR_TIME']) & (df['CANCELLED'] == 0)
+    return df
 
+def flight_snipper(df):
+    df["FL_DATE"] = df["FL_DATE"].str.slice(0, -12)
+    return df
+
+
+def flight_cleaner():
+    df = pd.read_csv("backend/data/flightData.csv")
+    df = late_flights(df)
+    df = flight_snipper(df)
+    df.to_csv("backend/data/flightDataCleaned.csv", index=False)
 
 def main():
-    load_flights(0)
+    load_flights()
+    flight_cleaner()
     for flight in flightList:
         flight.flightDetails()
 
@@ -106,7 +122,11 @@ def day1():
     day1Flights = day_filter('01')
     return day1Flights
     
-
+@app.route('/cancelled')
+def cancelled():
+    load_flights()
+    cancelledFlights=cancel_filter(True)
+    return cancelledFlights
 @app.route('/')
 def home():
     return 'Flask API is running. Try /testAccess'
