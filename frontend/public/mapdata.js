@@ -4,7 +4,7 @@ var simplemaps_usmap_mapdata = {
   // Once we have all of this done we can then upload it to simple maps again and get  our svg
   main_settings: {
     //General settings
-    width: "487", //'700' or 'responsive'
+    width: "responsive", //'700' or 'responsive'
     background_color: "#FFFFFF",
     background_transparent: "yes",
     border_color: "#ffffff",

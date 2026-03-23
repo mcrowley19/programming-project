@@ -2,7 +2,29 @@ import { useEffect, useState } from "react";
 
 function App() {
   useEffect(() => {
-    window.simplemaps_usmap.load();
+    const mapEl = document.getElementById("map");
+    if (!mapEl) return;
+
+    const mapAlreadyRendered = mapEl.querySelector("#map_holder");
+    if (!mapAlreadyRendered && window.simplemaps_usmap?.load) {
+      window.simplemaps_usmap.load();
+    }
+
+    const syncMapSize = () => {
+      window.simplemaps_usmap?.resize?.();
+    };
+
+    const rafId = window.requestAnimationFrame(syncMapSize);
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(syncMapSize)
+        : null;
+    observer?.observe(mapEl);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      observer?.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -42,16 +64,8 @@ function App() {
         <div className="mx-2 mb-2 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs text-white/90 whitespace-pre-line">
           {message}
         </div>
-        <div className="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
-          <div id="map" className="scale-[2.2] origin-center">
-            <path
-              d="M 410 100 Q 240 50 50 200" // hardcoded coordinates just for testing
-              fill="none"
-              stroke="#00AEEF"
-              strokeWidth="2"
-              opacity="0.7"
-            />
-          </div>
+        <div className="flex-1 min-h-0 overflow-auto">
+          <div id="map" className="mx-auto w-full min-w-0"></div>
         </div>
       </div>
     </>
