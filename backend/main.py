@@ -1,5 +1,4 @@
 import csv
-from pathlib import Path
 import pandas as pd
 from flask import Flask
 from flask import request
@@ -9,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 flightList = []
-DATA_FILE = Path(__file__).resolve().parent / 'data' / 'flightData.csv'
+DATA_FILE = './data/flightData.csv'
 class Flight:
     def __init__(self, FL_DATE, MKT_CARRIER, MKT_CARRIER_FL_NUM, ORIGIN, ORIGIN_CITY_NAME, ORIGIN_STATE_ABR, ORIGIN_WAC, DEST, DEST_CITY_NAME, DEST_STATE_ABR, DEST_WAC, CRS_DEP_TIME, DEP_TIME, CRS_ARR_TIME, ARR_TIME, CANCELLED, DIVERTED, DISTANCE):
         self.FL_DATE = FL_DATE
