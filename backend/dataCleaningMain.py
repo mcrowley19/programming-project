@@ -41,7 +41,3 @@ for iata, long, lat, count in zip(iata_list, long_list, lat_list, range(len(long
 
 # This outputs a json string which has quotes around the key names. To solve this I did JSON.parse in the js code
 print(json.dumps(airports_dict))
-
-
-
-

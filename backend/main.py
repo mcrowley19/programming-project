@@ -3,6 +3,8 @@ import pandas as pd
 from flask import Flask
 from flask import request
 from flask_cors import CORS
+from display import build_late_vs_ontime_fig
+
 app = Flask(__name__)
 
 CORS(app)
@@ -42,9 +44,6 @@ class Flight:
         return f'Flight Date: {self.FL_DATE}\nMarket Carrier: {self.MKT_CARRIER}\nMarket Carrier Flight Number: {self.MKT_CARRIER_FL_NUM}\nOrigin: {self.ORIGIN}\nOrigin City Name: {self.ORIGIN_CITY_NAME}\nOrigin State Abbreviation: {self.ORIGIN_STATE_ABR}\nOrigin WAC: {self.ORIGIN_WAC}\nDestination: {self.DEST}\nDestination City Name: {self.DEST_CITY_NAME}\nDestination State Abbreviation: {self.DEST_STATE_ABR}\nDestination WAC: {self.DEST_WAC}\nCRS Departure Time: {self.CRS_DEP_TIME}\nDeparture Time: {self.DEP_TIME}\nCRS Arrival Time: {self.CRS_ARR_TIME}\nArrival Time: {self.ARR_TIME}\nCancelled: {self.CANCELLED}\nDiverted: {self.DIVERTED}\nDistance: {self.DISTANCE}\n'
 
 def load_flights():
-    if flightList:
-        return
-
     with open(DATA_FILE) as csvfile:
         reader = csv.reader(csvfile)
         next(reader) # skips the first line of the CSV file
@@ -106,6 +105,10 @@ def main():
     for flight in flightList:
         flight.flightDetails()
 
+@app.route('/charts/late-vs-ontime')
+def late_vs_ontime_chart():
+    fig = build_late_vs_ontime_fig()
+    return fig.to_html(full_html=True, include_plotlyjs="cdn")
 
 @app.route('/testAccess')
 def testAccess():
