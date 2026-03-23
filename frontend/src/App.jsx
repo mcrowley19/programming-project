@@ -1,6 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
+function PageHeader() {
+  return (
+    <header
+      className="flex-shrink-0 flex min-w-max items-center gap-2 m-2 px-3 py-1
+        rounded-2xl bg-white/10 backdrop-blur-[10px] border border-white/20 w-full"
+    >
+      <div className="flex gap-3 items-center">
+        <touchable
+          type="touchable"
+          className="flex gap-3 items-center px-4 py-2 min-w-max font-semibold text-white rounded-full transition-all hover:opacity-90"
+        >
+          <h1 className="text-sm font-bold uppercase tracking-[0.2em] whitespace-nowrap">
+            Flight History
+          </h1>
+        </touchable>
+      </div>
+
+      <nav className="flex flex-1 gap-1 justify-center items-center"></nav>
+    </header>
+  );
+}
+
 function MapPage() {
   const [message, setMessage] = useState("Loading backend...");
 
@@ -40,23 +62,7 @@ function MapPage() {
 
   return (
     <div className="h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-gradient-to-br from-gray-900 to-[#13162c]">
-      <header
-        className="flex-shrink-0 flex min-w-max items-center gap-2 m-2 px-3 py-1
-          rounded-2xl bg-white/10 backdrop-blur-[10px] border border-white/20 w-full"
-      >
-        <div className="flex gap-3 items-center">
-          <touchable
-            type="touchable"
-            className="flex gap-3 items-center px-4 py-2 min-w-max font-semibold text-white rounded-full transition-all hover:opacity-90"
-          >
-            <h1 className="text-sm font-bold uppercase tracking-[0.2em] whitespace-nowrap">
-              Flight History
-            </h1>
-          </touchable>
-        </div>
-
-        <nav className="flex flex-1 gap-1 justify-center items-center"></nav>
-      </header>
+      <PageHeader />
 
       <div className="px-3 py-2 mx-2 mb-2 text-xs whitespace-pre-line rounded-xl border border-white/15 bg-white/5 text-white/90">
         {message}
@@ -71,12 +77,12 @@ function MapPage() {
 
 function ChartsPage() {
   return (
-    <div className="h-screen w-screen bg-[#13162c] text-white p-4">
-      <h1 className="mb-4 text-xl font-bold">Charts</h1>
+    <div className="h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-gradient-to-br from-gray-900 to-[#13162c]">
+      <PageHeader />
       <iframe
         src="http://127.0.0.1:5000/charts/late-vs-ontime"
         title="Late vs On-Time Chart"
-        className="w-full h-[85vh] rounded-lg bg-white"
+        className="w-full flex-1 min-h-0 rounded-lg bg-white"
       />
     </div>
   );
