@@ -19,21 +19,27 @@ Format needed for frontend
       name: "Anchorage"
     }
 """
-df = pd.read_csv('programming-project/backend/data/airportsCleaned.csv')
+df = pd.read_csv('../data/airportsCleaned.csv')
 
 airports_dict = {}
 
 iata_list = df["IATA"].tolist()
-long_list = df["LATITUDE"].tolist()
-lat_list = df["LONGITUDE"].tolist()
+long_list = df["LONGITUDE"].tolist()
+lat_list = df["LATITUDE"].tolist()
 
+non_mainland = ["ANC", "FAI", "JNU", "KTN", "SIT", "HNL", "OGG", "KOA", "ITO",
+                "LIH", "SJU", "BQN", "PSE", "GUM", "STT", "STX", "PPG", "SPN",
+                "ROP", "TIQ","ADK", "ADQ", "AKN", "BET", "BRW", "CDV", "DLG", "GST", "OME", "OTZ", "PSG", "SCC", "WRG", "YAK"]
 for iata, long, lat in zip(iata_list, long_list, lat_list):
-    current_airport = {
-        "lat": round(lat, 2),
-        "lng": round(long, 2),
-        "name": iata
-        }
-    airports_dict[iata] = current_airport
+    if iata not in non_mainland:
+      current_airport = {
+          "lat": str(round(lat, 2)),
+          "lng": str(round(long, 2)),
+          "name": iata
+          }
+      airports_dict[iata] = current_airport
+
+  
 
 # This outputs a json string which has quotes around the key names. To solve this I did JSON.parse in the js code
 print(json.dumps(airports_dict))
