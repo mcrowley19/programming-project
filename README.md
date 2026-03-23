@@ -30,24 +30,7 @@ perpY =  dx / distance     (normalized)
 
 Step 4 — Control point:
 controlX = midX + perpX * (distance * 0.35)
-controlY = midY + perpY * (distance * 0.35) -->
-
-<!-- 
-Step 1 — Lerp from start to control:
-ax = x1 + t * (cx - x1)
-ay = y1 + t * (cy - y1)
-
-Step 2 — Lerp from control to end:
-bx = cx + t * (x2 - cx)
-by = cy + t * (y2 - cy)
-
-Step 3 — Lerp between those two results:
-pointX = ax + t * (bx - ax)
-pointY = ay + t * (by - ay)
-
-Expanded into the single formula:
-pointX = (1-t)² * x1  +  2(1-t)t * cx  +  t² * x2
-pointY = (1-t)² * y1  +  2(1-t)t * cy  +  t² * y2
+controlY = midY + perpY * (distance * 0.35)
 
 To draw the full curve, iterate t in small steps:
 for t from 0 to 1, step 0.01:
@@ -77,6 +60,4 @@ for (let t = 0; t <= 1; t += 0.01) {
     const y = Math.pow(1 - t, 2) * airport1Y 
              + 2 * (1 - t) * t * controlY 
              + Math.pow(t, 2) * airport2Y;
-
-    plot(x, y);
 }

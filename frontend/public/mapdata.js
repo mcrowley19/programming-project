@@ -18,12 +18,12 @@ var simplemaps_usmap_mapdata = {
     all_states_zoomable: "no",
 
     //Location defaults
-    location_description: "Airport",
+    // location_description: "Airport",
     location_color: "#ED2B2B",
     location_opacity: 1,
     location_url: "",
     location_size: 10,
-    location_image_source: "frog.png",
+    // location_image_source: "frog.png",
     location_border_color: "#FFFFFF",
     location_border: 0.5,
     all_locations_inactive: "no",
