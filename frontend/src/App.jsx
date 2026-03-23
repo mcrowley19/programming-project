@@ -28,7 +28,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/testAccess")
+    fetch("http://127.0.0.1:5000/day/1")
       .then((res) => res.text())
       .then((text) => setMessage(text))
       .catch(() => setMessage("Backend not connected"));

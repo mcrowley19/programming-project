@@ -25,3 +25,4 @@ dist-ssr
 backend/venv/lib/python3.12/site-packages/pip/_vendor/rich/__pycache__/*
 backend/venv/lib/python3.12/site-packages/*
 backend/venv/
+/backend/__pycache__
