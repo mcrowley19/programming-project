@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 backend/venv/lib/python3.12/site-packages/pip/_vendor/rich/__pycache__/*
 backend/venv/lib/python3.12/site-packages/*
+backend/venv/
