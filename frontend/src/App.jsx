@@ -7,9 +7,9 @@ function App() {
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/testAccess")
-    .then((res) => res.text())
-    .then((text) => setMessage(text))
-    .catch(() => setMessage("Backend not connected"))
+      .then((res) => res.text())
+      .then((text) => setMessage(text))
+      .catch(() => setMessage("Backend not connected"));
   }, []);
 
   const [message, setMessage] = useState("Loading backend...");
@@ -43,7 +43,15 @@ function App() {
           {message}
         </div>
         <div className="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
-          <div id="map" className="scale-[2.2] origin-center"></div>
+          <div id="map" className="scale-[2.2] origin-center">
+            <path
+              d="M 410 100 Q 240 50 50 200" // hardcoded coordinates just for testing
+              fill="none"
+              stroke="#00AEEF"
+              strokeWidth="2"
+              opacity="0.7"
+            />
+          </div>
         </div>
       </div>
     </>
