@@ -1,5 +1,6 @@
 class Curve {
-  Curve(x1, y1, x2, y2) {
+  Curve(x1, y1, x2, y2, curveNum) {
+    this.curveNum = curveNum;
     var points = [];
     const dx = airport2X - airport1X;
     const dy = airport2Y - airport1Y;
@@ -29,7 +30,17 @@ class Curve {
     }
     this.points = points;
   }
-  getNextPoint() {
-    return pop(this.points);
+  getPoints() {
+    var pointsList = [];
+    for (let i = 0; i < this.points.length; i++) {
+      pointsList.append({
+        lat: string(points[i][1]),
+        lng: string(points[i][0]),
+        color: "#FFFFFF",
+        shape: "circle",
+        size: 5,
+      });
+    }
+    return pointsList;
   }
 }
