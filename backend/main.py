@@ -2,6 +2,9 @@ import pandas as pd
 from flask_cors import CORS
 from flask import Flask
 
+# Imported display functions from display.py
+from display import build_late_vs_ontime_fig 
+
 app = Flask(__name__)
 
 CORS(app)
@@ -66,6 +69,11 @@ def cancelled():
     """
     cancelledFlights=cancel_filter(True)
     return cancelledFlights
+
+@app.route('/charts/late-vs-ontime')
+def late_vs_ontime_chart():
+    fig = build_late_vs_ontime_fig()
+    return fig
 
 @app.route('/')
 def home():
