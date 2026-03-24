@@ -1,6 +1,6 @@
-# programming-project
+# Programming Project
 
-Made in react and python
+Made in React and Python by group 2.
 
 ## Team members
 
@@ -11,6 +11,36 @@ Made in react and python
 * Cillian O'Neill Diamond
 * Carlos Manuel Cejas
 
+## How to set up
+
+### Backend
+
+1. In the terminal, change directory to backend first with the command `cd backend`
+2. Create a virtual environment with:
+    `python -m venv venv` or `python3 -m venv venv` if on macOS
+3. Activate the virtual environment in this repository with:
+    `source venv/bin/activate`
+4. Install the required packages with:
+    `pip install flask flask-cors pandas plotly`
+5. Run the Python file `main.py` with:
+    `python main.py` or `python3 main.py` if on macOS
+
+The backend is now running on http://127.0.0.1:5000/.
+To verify that it is running, open the link. You should see the message:
+"Flask API is running. Try /day/1"
+
+### Frontend
+
+1. In another terminal window, change directory to frontend with the command:
+    `cd frontend`
+2. Install dependencies with `npm install`
+3. Start Vite dev server with `npm run dev`
+
+The frontend is now running on http://localhost:5173 unless stated otherwise by Vite. Keep both terminal sessions running to use the app.
+
+---
+
+## Math
 
 <!-- Start (x1, y1), Control (cx, cy), End (x2, y2), and t from 0 → 1
 
