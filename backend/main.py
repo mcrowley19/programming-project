@@ -69,7 +69,7 @@ def cancelled():
 
 @app.route('/')
 def home():
-    return 'Flask API is running. Try /day1'
+    return 'Flask API is running. Try /day/1'
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,7 +1,9 @@
 import pandas as pd
 
-""""
-This code cleans the dataset when run
+"""
+This cleans flight data by adding LATE and ON_TIME flags,
+changing FL_DATE to only have the day,
+and saving the new data as a new CSV called flightDataCleaned.csv .
 """
 DATA_FILE = './data/flightData.csv'
 
