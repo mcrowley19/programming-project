@@ -1,13 +1,14 @@
 class Curve {
-  Curve(x1, y1, x2, y2, curveNum) {
+  constructor(x1, y1, x2, y2, curveNum) {
     this.curveNum = curveNum;
-    var points = [];
-    const dx = airport2X - airport1X;
-    const dy = airport2Y - airport1Y;
+    this.points = [];
+    
+    const dx = x2 - x1;
+    const dy = y2 - y1;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    const midX = (airport1X + airport2X) / 2;
-    const midY = (airport1Y + airport2Y) / 2;
+    const midX = (x1 + x2) / 2;
+    const midY = (y1 + y2) / 2;
 
     const perpX = -dy / distance;
     const perpY = dx / distance;
@@ -17,30 +18,44 @@ class Curve {
 
     for (let t = 0; t <= 1; t += 0.01) {
       const x =
-        Math.pow(1 - t, 2) * airport1X +
+        Math.pow(1 - t, 2) * x1 +
         2 * (1 - t) * t * controlX +
-        Math.pow(t, 2) * airport2X;
+        Math.pow(t, 2) * x2;
 
       const y =
-        Math.pow(1 - t, 2) * airport1Y +
+        Math.pow(1 - t, 2) * y1 +
         2 * (1 - t) * t * controlY +
-        Math.pow(t, 2) * airport2Y;
+        Math.pow(t, 2) * y2;
 
-      points.append((x, y));
+      this.points.push([x, y]);
     }
-    this.points = points;
   }
+
   getPoints() {
-    var pointsList = [];
+    const pointsList = [];
     for (let i = 0; i < this.points.length; i++) {
-      pointsList.append({
-        lat: string(points[i][1]),
-        lng: string(points[i][0]),
+      pointsList.push({
+        lat: String(this.points[i][1]),
+        lng: String(this.points[i][0]),
         color: "#FFFFFF",
         shape: "circle",
-        size: 5,
+        size: 2,
       });
     }
     return pointsList;
+  }
+}
+
+export function createPoints(routes) {
+
+  const locations = window.simplemaps_usmap_mapdata.locations;
+  let nextNumber = 341; // hardcoded to not mess with hardcoded airport locations and stuff.
+
+  for (const r of routes) {
+    const curve = new Curve(r.x1, r.y1, r.x2, r.y2, nextNumber);
+    for (const p of curve.getPoints()) {
+      locations[nextNumber] = p;
+      nextNumber++;
+    }
   }
 }
