@@ -1,5 +1,29 @@
 # Backend Readme
 
-There are required dependencies to run this app's backend.
+Commands to run the backend
 
-For macOS, you might need to do `python3 -m pip install ...` instead of `pip install ...` depending on how your Python is installed when setting up the backend. If you get ModuleNotFoundError despite following the steps in the main README, run pip in the alternative, more direct way.
+1. Navigate to the correct directory:
+
+```console
+ cd backend
+```
+
+2. Create a venv
+
+```console
+python3 -m venv venv
+```
+
+3. Activate the venv
+
+```console
+source venv/bin/activate
+```
+
+4. Install packages
+
+```
+pip install -r requirements.txt
+```
+
+5. Run main.py
