@@ -1,5 +1,8 @@
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objs as go
+import json
+from plotly.utils import PlotlyJSONEncoder
 
 DATA_FILE = "data/flightDataCleaned.csv" # remarkable algorithm that finds the path
 
@@ -22,4 +25,4 @@ def build_late_vs_ontime_fig():
         labels={"MKT_CARRIER": "Carrier", "value": "Flights", "variable": "Status"},
     )
 
-    return fig
+    return json.dumps(fig, cls=PlotlyJSONEncoder)

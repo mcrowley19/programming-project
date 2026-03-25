@@ -1,7 +1,8 @@
+import Plot from "react-plotly.js";
 import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { createPoints } from "./BezierCurve";
-
+import { coords } from "./airportCoords";
 function PageHeader() {
   return (
     <header
@@ -25,38 +26,51 @@ function PageHeader() {
 }
 
 function MapPage() {
-  const [message, setMessage] = useState("Loading backend...");
-
+  const [routes, setRoutes] = useState([]);
   useEffect(() => {
     const mapEl = document.getElementById("map");
+    fetch("http://127.0.0.1:5000/day/1")
+      .then((res) => res.json())
+      .then((flights) => {
+        const newRoutes = [];
+        for (let i = 0; i < flights.length; i++) {
+          const origin = flights[i].ORIGIN;
+          const dest = flights[i].DEST;
+
+          if (
+            coords[origin] &&
+            coords[dest] &&
+            Number(flights[i].DEP_TIME) > 700 &&
+            Number(flights[i].DEP_TIME) < 720
+          ) {
+            const x1 = Number(coords[origin].lng);
+            const y1 = Number(coords[origin].lat);
+            const x2 = Number(coords[dest].lng);
+            const y2 = Number(coords[dest].lat);
+            newRoutes.push({
+              time: Number(flights[i].DEP_TIME),
+              x1: x1,
+              x2: x2,
+              y1: y1,
+              y2: y2,
+            });
+          }
+        }
+        setRoutes(newRoutes);
+        createPoints(newRoutes);
+
+        window.simplemaps_usmap.load();
+      })
+      .catch((e) => console.log(e));
 
     // initalise map with epic curved paths!!!
     const initMap = () => {
-
       //temporary hardcoded routes for fligths.
-      const routes = [
-        { x1: -106.61, y1: 35.04, x2: -84.43, y2: 33.64 },
-        { x1: -118.24, y1: 33.94, x2: -73.78, y2: 40.64 },
-        { x1: -87.90, y1: 41.98, x2: -97.04, y2: 32.90 },
-        { x1: -122.37, y1: 37.62, x2: -80.29, y2: 25.80 },
-        { x1: -122.30, y1: 47.45, x2: -87.90, y2: 41.98 },
-        { x1: -104.67, y1: 39.86, x2: -115.15, y2: 36.08 },
-        { x1: -112.01, y1: 33.43, x2: -71.01, y2: 42.36 },
-        { x1: -118.24, y1: 33.94, x2: -104.67, y2: 39.86 },
-        { x1: -94.72, y1: 39.30, x2: -95.27, y2: 29.98 },
-        { x1: -93.22, y1: 44.88, x2: -84.43, y2: 33.64 },
-        { x1: -122.37, y1: 37.62, x2: -115.15, y2: 36.08 },
-        { x1: -80.29, y1: 25.80, x2: -73.78, y2: 40.64 },
-        { x1: -97.04, y1: 32.90, x2: -71.01, y2: 42.36 },
-        { x1: -122.30, y1: 47.45, x2: -118.24, y2: 33.94 },
-        { x1: -95.27, y1: 29.98, x2: -104.67, y2: 39.86 },
-      ];
       createPoints(routes);
 
       window.simplemaps_usmap.load();
     };
     // run itialisation of epic curved paths
-    initMap();
 
     const syncMapSize = () => {
       window.simplemaps_usmap?.resize?.();
@@ -76,20 +90,11 @@ function MapPage() {
     };
   }, []);
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/day/1")
-      .then((res) => res.text())
-      .then((text) => setMessage(text))
-      .catch(() => setMessage("Backend not connected"));
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className="h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-gradient-to-br from-gray-900 to-[#13162c]">
       <PageHeader />
-
-      <div className="px-3 py-2 mx-2 mb-2 text-xs whitespace-pre-line rounded-xl border border-white/15 bg-white/5 text-white/90">
-        {message}
-      </div>
 
       <div className="overflow-auto flex-1 min-h-0">
         <div id="map" className="mx-auto w-full h-full bg-gray-800"></div>
@@ -99,14 +104,23 @@ function MapPage() {
 }
 
 function ChartsPage() {
+  const [graphs, setGraphs] = useState(null);
+  useEffect(() => {
+    const mapEl = document.getElementById("map");
+    fetch("http://127.0.0.1:5000/charts/late-vs-ontime")
+      .then((res) => res.json())
+      .then((chart) => {
+        setGraphs(chart);
+      });
+  });
+  if (!graphs) {
+    return <div className="text-white p-10">Loading Charts...</div>;
+  }
   return (
     <div className="h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-gradient-to-br from-gray-900 to-[#13162c]">
       <PageHeader />
-      <iframe
-        src="http://127.0.0.1:5000/charts/late-vs-ontime"
-        title="Late vs On-Time Chart"
-        className="w-full flex-1 min-h-0 rounded-lg bg-white"
-      />
+
+      <Plot data={graphs.data} layout={graphs.layout} />
     </div>
   );
 }

@@ -12,7 +12,8 @@ def clean_flights():
     df['LATE'] = df['CRS_ARR_TIME'] < df['ARR_TIME']
     df["ON_TIME"] = (df['CRS_ARR_TIME'] >= df['ARR_TIME']) & (df['CANCELLED'] == 0)
     df["FL_DATE"] = df["FL_DATE"].str.slice(0, -12)
-    df.to_csv("backend/data/flightDataCleaned.csv", index=False)
+    df = df.dropna()
+    df.to_csv("./data/flightDataCleaned.csv", index=False)
 
 if __name__ == "__main__":
     clean_flights()

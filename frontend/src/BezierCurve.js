@@ -2,7 +2,7 @@ class Curve {
   constructor(x1, y1, x2, y2, curveNum) {
     this.curveNum = curveNum;
     this.points = [];
-    
+
     const dx = x2 - x1;
     const dy = y2 - y1;
     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -47,7 +47,6 @@ class Curve {
 }
 
 export function createPoints(routes) {
-
   const locations = window.simplemaps_usmap_mapdata.locations;
   let nextNumber = 341; // hardcoded to not mess with hardcoded airport locations and stuff.
 

@@ -1,14 +1,14 @@
 import pandas as pd
 from flask_cors import CORS
 from flask import Flask
-
+import json
 # Imported display functions from display.py
 from display import build_late_vs_ontime_fig 
 
 app = Flask(__name__)
 
 CORS(app)
-DATA_FILE = './data/flightData.csv'
+DATA_FILE = './data/flightDataCleaned.csv'
 
 df = pd.read_csv(DATA_FILE)
 """"
@@ -60,7 +60,9 @@ def date(day):
     There are 6 days in the dataset 1,2,3,4,5 and 6
     """
     day_df = df[df["FL_DATE"].str.split('/').str[1] == day]
-    return day_df.to_dict(orient="records")
+    day_df = day_df.to_dict(orient="records")
+    print(json.dumps(day_df))
+    return json.dumps(day_df)
     
 @app.route('/cancelled')
 def cancelled():
