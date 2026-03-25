@@ -48,7 +48,10 @@ class Curve {
 
 export function createPoints(routes) {
   const locations = window.simplemaps_usmap_mapdata.locations;
-  let nextNumber = 341; // hardcoded to not mess with hardcoded airport locations and stuff.
+  for (const k of Object.keys(locations)) {
+    if (Number(k) >= 341) delete locations[k];
+  }
+  let nextNumber = 341;
 
   for (const r of routes) {
     const curve = new Curve(r.x1, r.y1, r.x2, r.y2, nextNumber);

@@ -2,6 +2,7 @@ var simplemaps_usmap_mapdata = {
   // cleaned up main stettings for just the info we need.
   main_settings: {
     hide_labels: "yes",
+    hide_eastern_labels: "yes",
     width: "responsive",
     background_color: "#FFFFFF",
     background_transparent: "yes",

@@ -1,6 +1,6 @@
 import pandas as pd
 from flask_cors import CORS
-from flask import Flask
+from flask import Flask, request, Response
 import json
 # Imported display functions from display.py
 from display import build_late_vs_ontime_fig 
@@ -11,6 +11,7 @@ CORS(app)
 DATA_FILE = './data/flightDataCleaned.csv'
 
 df = pd.read_csv(DATA_FILE)
+_fl_day = pd.to_datetime(df["FL_DATE"], format="%m/%d/%Y").dt.day
 """"
 This code reads the csv file from the cleaned dataset and then it sets up API endpoints
 """
@@ -53,16 +54,31 @@ def cancel_filter(state):
     """
     return df[df["CANCELLED"] == int(state)].to_dict(orient="records")
 
+def _day_df(day):
+    return df.loc[_fl_day == int(day)]
+
+@app.route('/day/<day>/dep-times')
+def day_dep_times(day):
+    dep_times_int = _day_df(day)["DEP_TIME"].dropna().astype(int)
+    in_window = dep_times_int[(dep_times_int > 700) & (dep_times_int < 720)]
+    unique_times = in_window.unique()
+    body = pd.Series(sorted(unique_times)).to_json(orient="values")
+    return Response(body, mimetype="application/json")
+
 @app.route('/day/<day>')
 def date(day):
     """"
     When an API call is made to /day/DAY_TO_FIND it returns a list of flights (as dicts) that occured on that day
     There are 6 days in the dataset 1,2,3,4,5 and 6
     """
-    day_df = df[df["FL_DATE"].str.split('/').str[1] == day]
-    day_df = day_df.to_dict(orient="records")
-    print(json.dumps(day_df))
-    return json.dumps(day_df)
+    day_flights = _day_df(day)
+    requested_dep_time = request.args.get("dep_time", type=int)
+    if requested_dep_time is not None:
+        dep_int = day_flights["DEP_TIME"].fillna(-1).astype(int)
+        day_flights = day_flights[dep_int == requested_dep_time]
+    flight_records = day_flights.to_dict(orient="records")
+    print(json.dumps(flight_records))
+    return json.dumps(flight_records)
     
 @app.route('/cancelled')
 def cancelled():

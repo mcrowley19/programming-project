@@ -8,6 +8,11 @@ body {
   overflow: hidden;
 }
 
-#map_legend {
+[id$="_legend"] {
+  display: none !important;
+}
+
+#map_legend,
+#map_access {
   display: none !important;
 }

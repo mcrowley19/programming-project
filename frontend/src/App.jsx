@@ -25,72 +25,78 @@ function PageHeader() {
   );
 }
 
+function flightsToRoutes(flights) {
+  return flights
+    .filter(
+      (flight) => coords[flight.ORIGIN] && coords[flight.DEST],
+    )
+    .map((flight) => ({
+      time: Number(flight.DEP_TIME),
+      x1: Number(coords[flight.ORIGIN].lng),
+      y1: Number(coords[flight.ORIGIN].lat),
+      x2: Number(coords[flight.DEST].lng),
+      y2: Number(coords[flight.DEST].lat),
+      origin: flight.ORIGIN,
+      dest: flight.DEST,
+    }));
+}
+
+function applyRoutes(routes) {
+  if (!window.simplemaps_usmap_mapdata) return;
+  createPoints(routes);
+  window.simplemaps_usmap?.load?.();
+  window.requestAnimationFrame(() => window.simplemaps_usmap?.resize?.());
+}
+
+const API = "http://127.0.0.1:5000";
+
 function MapPage() {
+  const [depTimes, setDepTimes] = useState([]);
+  const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
   const [routes, setRoutes] = useState([]);
+
   useEffect(() => {
-    const mapEl = document.getElementById("map");
-    fetch("http://127.0.0.1:5000/day/1")
-      .then((res) => res.json())
-      .then((flights) => {
-        const newRoutes = [];
-        for (let i = 0; i < flights.length; i++) {
-          const origin = flights[i].ORIGIN;
-          const dest = flights[i].DEST;
-
-          if (
-            coords[origin] &&
-            coords[dest] &&
-            Number(flights[i].DEP_TIME) > 700 &&
-            Number(flights[i].DEP_TIME) < 720
-          ) {
-            const x1 = Number(coords[origin].lng);
-            const y1 = Number(coords[origin].lat);
-            const x2 = Number(coords[dest].lng);
-            const y2 = Number(coords[dest].lat);
-            newRoutes.push({
-              time: Number(flights[i].DEP_TIME),
-              x1: x1,
-              x2: x2,
-              y1: y1,
-              y2: y2,
-            });
-          }
-        }
-        setRoutes(newRoutes);
-        createPoints(newRoutes);
-
-        window.simplemaps_usmap.load();
+    const mapElement = document.getElementById("map");
+    fetch(`${API}/day/1/dep-times`)
+      .then((response) => response.json())
+      .then((times) => {
+        setDepTimes(Array.isArray(times) ? times : []);
+        setSelectedTimeIndex(0);
       })
-      .catch((e) => console.log(e));
+      .catch((error) => console.log(error));
 
-    // initalise map with epic curved paths!!!
-    const initMap = () => {
-      //temporary hardcoded routes for fligths.
-      createPoints(routes);
-
-      window.simplemaps_usmap.load();
-    };
-    // run itialisation of epic curved paths
-
-    const syncMapSize = () => {
-      window.simplemaps_usmap?.resize?.();
-    };
-
-    const rafId = window.requestAnimationFrame(syncMapSize);
-    const observer =
+    const resizeMap = () => window.simplemaps_usmap?.resize?.();
+    const resizeFrameId = window.requestAnimationFrame(resizeMap);
+    const resizeObserver =
       typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(syncMapSize)
+        ? new ResizeObserver(resizeMap)
         : null;
-
-    observer?.observe(mapEl);
-
+    resizeObserver?.observe(mapElement);
     return () => {
-      window.cancelAnimationFrame(rafId);
-      observer?.disconnect();
+      window.cancelAnimationFrame(resizeFrameId);
+      resizeObserver?.disconnect();
     };
   }, []);
 
-  useEffect(() => {}, []);
+  const selectedDepTime = depTimes[selectedTimeIndex];
+
+  useEffect(() => {
+    if (selectedDepTime === undefined) {
+      setRoutes([]);
+      applyRoutes([]);
+      return;
+    }
+    fetch(`${API}/day/1?dep_time=${selectedDepTime}`)
+      .then((response) => response.json())
+      .then((flights) => {
+        const drawnRoutes = flightsToRoutes(flights);
+        setRoutes(drawnRoutes);
+        applyRoutes(drawnRoutes);
+      })
+      .catch((error) => console.log(error));
+  }, [selectedDepTime]);
+
+  const maxTimeIndex = Math.max(0, depTimes.length - 1);
 
   return (
     <div className="h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-gradient-to-br from-gray-900 to-[#13162c]">
@@ -99,6 +105,35 @@ function MapPage() {
       <div className="overflow-auto flex-1 min-h-0">
         <div id="map" className="mx-auto w-full h-full bg-gray-800"></div>
       </div>
+
+      {depTimes.length > 0 && (
+        <div
+          className="shrink-0 border-t border-white/20 bg-black/30 px-3 py-2 flex flex-col gap-2 text-white text-xs"
+        >
+          <label className="flex items-center gap-2">
+            <span className="shrink-0 tabular-nums">DEP {selectedDepTime}</span>
+            <input
+              type="range"
+              min={0}
+              max={maxTimeIndex}
+              value={Math.min(selectedTimeIndex, maxTimeIndex)}
+              onChange={(event) =>
+                setSelectedTimeIndex(Number(event.target.value))
+              }
+              className="w-full"
+            />
+          </label>
+          <div className="max-h-24 overflow-y-auto rounded border border-white/20 bg-white/5 px-2 py-1">
+            {routes.map((route, index) => (
+              <div
+                key={`${route.origin}-${route.dest}-${route.time}-${index}`}
+              >
+                {route.time} {route.origin} → {route.dest}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -106,13 +141,11 @@ function MapPage() {
 function ChartsPage() {
   const [graphs, setGraphs] = useState(null);
   useEffect(() => {
-    const mapEl = document.getElementById("map");
-    fetch("http://127.0.0.1:5000/charts/late-vs-ontime")
-      .then((res) => res.json())
-      .then((chart) => {
-        setGraphs(chart);
-      });
-  });
+    fetch(`${API}/charts/late-vs-ontime`)
+      .then((response) => response.json())
+      .then(setGraphs)
+      .catch((error) => console.log(error));
+  }, []);
   if (!graphs) {
     return <div className="text-white p-10">Loading Charts...</div>;
   }
