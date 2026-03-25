@@ -21,7 +21,7 @@ Made in React and Python by group 2.
 3. Activate the virtual environment in this repository with:
     `source venv/bin/activate`
 4. Install the required packages with:
-    `pip install flask flask-cors pandas plotly`
+    `pip install -r requirements.txt`
 5. Run the Python file `main.py` with:
     `python main.py` or `python3 main.py` if on macOS
 
