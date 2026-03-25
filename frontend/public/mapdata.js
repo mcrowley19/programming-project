@@ -1,12 +1,14 @@
 var simplemaps_usmap_mapdata = {
   // cleaned up main stettings for just the info we need.
   main_settings: {
+    hide_labels: "yes",
     width: "responsive",
     background_color: "#FFFFFF",
     background_transparent: "yes",
     border_color: "#ffffff",
     state_description: "State Description",
     state_color: "#292f3e",
+    state_hide_name: "yes",
     state_url: "",
     border_size: 1.5,
     all_states_inactive: "yes",
