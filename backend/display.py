@@ -22,4 +22,4 @@ def build_late_vs_ontime_fig():
         labels={"MKT_CARRIER": "Carrier", "value": "Flights", "variable": "Status"},
     )
 
-    return fig
+    return grouped

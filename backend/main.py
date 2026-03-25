@@ -72,8 +72,8 @@ def cancelled():
 
 @app.route('/charts/late-vs-ontime')
 def late_vs_ontime_chart():
-    fig = build_late_vs_ontime_fig()
-    return fig
+    grouped = build_late_vs_ontime_fig().to_json(orient='records')
+    return grouped
 
 @app.route('/')
 def home():
