@@ -107,7 +107,7 @@ function ChartsPage() {
   const [graphs, setGraphs] = useState(null);
   useEffect(() => {
     const mapEl = document.getElementById("map");
-    fetch("http://127.0.0.1:5000/charts/late-vs-ontime")
+    fetch("http://127.0.0.1:5000/charts/late-vs-ontime-day")
       .then((res) => res.json())
       .then((chart) => {
         setGraphs(chart);
