@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask import Flask, request, Response
 import json
 # Imported display functions from display.py
-from display import build_late_vs_ontime_by_carrier_fig, build_late_vs_ontime_by_day_fig, build_top_ten_busiest_airports_fig
+from display import *
 
 app = Flask(__name__)
 
@@ -130,6 +130,11 @@ def late_vs_ontime_by_day_chart():
 @app.route('/charts/busiest-airports')
 def flights_by_airport_chart():
     fig = build_top_ten_busiest_airports_fig()
+    return fig
+
+@app.route('/charts/flights-by-hour')
+def flights_by_hour_graph():
+    fig = build_flights_per_hour_fig()
     return fig
 
 @app.route('/')
