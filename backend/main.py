@@ -60,8 +60,7 @@ def _day_df(day):
 @app.route('/day/<day>/dep-times')
 def day_dep_times(day):
     dep_times_int = _day_df(day)["DEP_TIME"].dropna().astype(int)
-    in_window = dep_times_int[(dep_times_int > 700) & (dep_times_int < 720)]
-    unique_times = in_window.unique()
+    unique_times = dep_times_int.unique()
     body = pd.Series(sorted(unique_times)).to_json(orient="values")
     return Response(body, mimetype="application/json")
 
