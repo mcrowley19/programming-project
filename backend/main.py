@@ -10,11 +10,27 @@ app = Flask(__name__)
 CORS(app)
 DATA_FILE = './data/flightDataCleaned.csv'
 
-df = pd.read_csv(DATA_FILE)
-_fl_day = pd.to_datetime(df["FL_DATE"], format="%m/%d/%Y").dt.day
 """"
 This code reads the csv file from the cleaned dataset and then it sets up API endpoints
+
+API endpoints:
+- /day/<day> - returns a list of flights (as dicts) that occured
+- /day/<day>/dep-times - returns a list of unique departure times for the given day
+- /cancelled - returns a list of cancelled flights
+
+Endpoints for Charts:
+- /charts/late-vs-ontime-carrier - returns a bar graph comparing late vs ontime flights by carrier
+- /charts/late-vs-ontime-day - returns a bar graph comparing late vs ontime flights by day
+
+In progress:
+- /charts/busiest-airports - returns a bar graph of the airports with most flights in the dataset
+- /charts/flights-by-hour - returns a line graph of the number of flights departing at each hour of the day
+
 """
+
+df = pd.read_csv(DATA_FILE)
+_fl_day = pd.to_datetime(df["FL_DATE"], format="%m/%d/%Y").dt.day
+
 
 
 """"
