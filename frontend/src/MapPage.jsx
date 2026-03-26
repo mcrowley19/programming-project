@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
 import { createPoints } from "./scripts/BezierCurve";
 import { coords } from "./scripts/airportCoords";
 import { PageHeader } from "./components/PageHeader";
-import { ChartsPage } from "./ChartsPage";
 
 function flightsToRoutes(flights) {
   return flights
@@ -57,14 +55,14 @@ export function MapPage() {
   }, []);
 
   const selectedDepTime = depTimes[selectedTimeIndex];
-
+  const [selectedDay, setSelectedDay] = useState(1);
   useEffect(() => {
     if (selectedDepTime === undefined) {
       setRoutes([]);
       applyRoutes([]);
       return;
     }
-    fetch(`${API}/day/1?dep_time=${selectedDepTime}`)
+    fetch(`${API}/day/${selectedDay}?dep_time=${selectedDepTime}`)
       .then((response) => response.json())
       .then((flights) => {
         const drawnRoutes = flightsToRoutes(flights);
@@ -72,17 +70,17 @@ export function MapPage() {
         applyRoutes(drawnRoutes);
       })
       .catch((error) => console.log(error));
-  }, [selectedDepTime]);
+  }, [selectedDepTime, selectedDay]);
 
   const maxTimeIndex = Math.max(0, depTimes.length - 1);
   const [daySetterShow, setDaySetterShow] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(1);
+  const days = ["SAT", "SUN", "MON", "TUE", "WED", "THURS"];
   return (
     <div className=" relative h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-linear-to-br from-gray-900 to-[#13162c]">
       <PageHeader />
 
       <div className="overflow-auto flex-1 min-h-0">
-        <div id="map" className="mx-auto w-7/10 h-96 bg-[#13162c]"></div>
+        <div id="map" className="mx-auto w-6/10 h-96 bg-[#13162c]"></div>
       </div>
       <button
         className=" w-20 justify-start border-t border-l border-r rounded-tl border-white/20 bg-black/30 py-1 text-white text-sm"
@@ -92,10 +90,10 @@ export function MapPage() {
       </button>
       {daySetterShow && (
         <div className=" flex justify-start text-white text-xl">
-          {["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"].map((day, i) => (
+          {days.map((day, i) => (
             <button
               onClick={() => {
-                setSelectedDay(i);
+                setSelectedDay(i + 1);
               }}
               className=" w-20 justify-start border-r border-l border-t  hover:bg-white/10 border-white/20 bg-black/30  py-1 text-white text-sm"
             >
@@ -108,7 +106,8 @@ export function MapPage() {
         <div className="shrink-0 border-t border-white/20 bg-black/30 px-3 py-2 flex flex-col gap-2 text-white text-xs">
           <label className="flex items-center gap-2">
             <span className="shrink-0 tabular-nums">
-              DEP {Math.floor(selectedDepTime / 100) < 10 ? 0 : ""}
+              {days[selectedDay - 1]}{" "}
+              {Math.floor(selectedDepTime / 100) < 10 ? 0 : ""}
               {Math.floor(selectedDepTime / 100)}:
               {selectedDepTime < 10 ? 0 : ""}
               {selectedDepTime % 100}
@@ -124,7 +123,7 @@ export function MapPage() {
               className="w-full"
             />
           </label>
-          <div className="max-h-24 overflow-y-auto rounded border border-white/20 bg-white/5 px-2 py-1">
+          <div className="h-24 overflow-y-auto rounded border border-white/20 bg-white/5 px-2 py-1">
             {routes.map((route, index) => (
               <div key={`${route.origin}-${route.dest}-${route.time}-${index}`}>
                 {route.time} {route.origin} → {route.dest}
