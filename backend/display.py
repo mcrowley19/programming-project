@@ -59,9 +59,8 @@ def build_flights_per_hour_fig():
     df["DEP_HOUR"] = ((df["CRS_DEP_TIME"] // 100).astype(int))
 
     grouped = (
-        df.groupby("DEP_HOUR")
-        .count()
-        .reset_index()
+        df.groupby("DEP_HOUR").size()
+        .reset_index(name="FLIGHTS")
     )
 
     fig = px.line(
