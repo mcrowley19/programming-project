@@ -7,7 +7,7 @@ from plotly.utils import PlotlyJSONEncoder
 DATA_FILE = "data/flightDataCleaned.csv" # remarkable algorithm that finds the path
 
 
-def build_late_vs_ontime_fig():
+def build_late_vs_ontime_by_carrier_fig():
     df = pd.read_csv(DATA_FILE)
 
     grouped = (
@@ -23,6 +23,27 @@ def build_late_vs_ontime_fig():
         barmode="group",
         title="On-Time vs Late Flights by Carrier",
         labels={"MKT_CARRIER": "Carrier", "value": "Flights", "variable": "Status"},
+    )
+
+    return json.dumps(fig, cls=PlotlyJSONEncoder)
+
+
+def build_late_vs_ontime_by_day_fig():
+    df = pd.read_csv(DATA_FILE)
+
+    grouped = (
+        df.groupby("FL_DATE")[["ON_TIME", "LATE"]]
+        .sum()
+        .reset_index()
+    )
+
+    fig = px.bar(
+        grouped,
+        x="FL_DATE",
+        y=["ON_TIME", "LATE"],
+        barmode="group",
+        title="On-Time vs Late Flights by Day",
+        labels={"DAY": "Day of Month", "value": "Flights", "variable": "Status"},
     )
 
     return json.dumps(fig, cls=PlotlyJSONEncoder)

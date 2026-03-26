@@ -141,7 +141,7 @@ function MapPage() {
 function ChartsPage() {
   const [graphs, setGraphs] = useState(null);
   useEffect(() => {
-    fetch(`${API}/charts/late-vs-ontime`)
+    fetch(`${API}/charts/late-vs-ontime-day`)
       .then((response) => response.json())
       .then(setGraphs)
       .catch((error) => console.log(error));

@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask import Flask, request, Response
 import json
 # Imported display functions from display.py
-from display import build_late_vs_ontime_fig 
+from display import build_late_vs_ontime_by_carrier_fig, build_late_vs_ontime_by_day_fig 
 
 app = Flask(__name__)
 
@@ -88,9 +88,14 @@ def cancelled():
     cancelledFlights=cancel_filter(True)
     return cancelledFlights
 
-@app.route('/charts/late-vs-ontime')
-def late_vs_ontime_chart():
-    fig = build_late_vs_ontime_fig()
+@app.route('/charts/late-vs-ontime-carrier')
+def late_vs_ontime_by_carrier_chart():
+    fig = build_late_vs_ontime_by_carrier_fig()
+    return fig
+
+@app.route('/charts/late-vs-ontime-day')
+def late_vs_ontime_by_day_chart():
+    fig = build_late_vs_ontime_by_day_fig()
     return fig
 
 @app.route('/')
