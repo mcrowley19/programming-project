@@ -51,3 +51,39 @@ def build_late_vs_ontime_by_day_fig():
     )
 
     return json.dumps(fig, cls=PlotlyJSONEncoder)
+
+
+def build_flights_per_hour_fig():
+    df = pd.read_csv(DATA_FILE)
+
+    df["DEP_HOUR"] = ((df["CRS_DEP_TIME"] // 100).astype(int))
+
+    grouped = (
+        df.groupby("DEP_HOUR")
+        .count()
+        .reset_index()
+    )
+
+    fig = px.line(
+        grouped,
+        x="DEP_HOUR",
+        y="FLIGHTS",
+        title="Number of Flights Departing by Hour",
+        labels={"DEP_HOUR": "Departure Hour", "FLIGHTS": "Number of Flights"},
+    )
+
+    return json.dumps(fig, cls=PlotlyJSONEncoder)
+
+
+def build_top_ten_busiest_airports_fig():
+    df=pd.read_csv(DATA_FILE)
+    top10=df['ORIGIN'].value_counts().nlargest(10).reset_index()
+    fig = px.bar(
+        top10,
+        x='ORIGIN', 
+        y='count',
+        title="Ten Busiest Airports by Departures" ,
+        labels={'ORIGIN': 'Origin Airport', 'count': 'Number of Flights'},
+    )
+    return json.dumps(fig, cls=PlotlyJSONEncoder)
+
