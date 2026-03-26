@@ -7,6 +7,10 @@ function flightsToRoutes(flights) {
   return flights
     .filter((flight) => coords[flight.ORIGIN] && coords[flight.DEST])
     .map((flight) => ({
+      originCity: flight.ORIGIN_CITY_NAME,
+      destCity: flight.DEST_CITY_NAME,
+      arrTime: Number(flight.ARR_TIME),
+      distance: Number(flight.DISTANCE),
       time: Number(flight.DEP_TIME),
       x1: Number(coords[flight.ORIGIN].lng),
       y1: Number(coords[flight.ORIGIN].lat),
@@ -16,10 +20,27 @@ function flightsToRoutes(flights) {
       dest: flight.DEST,
     }));
 }
+function flightsToAirports(flights) {
+  return flights
+    .filter((flight) => coords[flight.ORIGIN] && coords[flight.DEST])
+    .reduce((acc, flight) => {
+      (acc.push({
+        lng: Number(coords[flight.ORIGIN].lng),
+        lat: Number(coords[flight.ORIGIN].lat),
+        name: flight.ORIGIN,
+      }),
+        acc.push({
+          lng: Number(coords[flight.DEST].lng),
+          lat: Number(coords[flight.DEST].lat),
+          name: flight.DEST,
+        }));
+      return acc;
+    }, []);
+}
 
-function applyRoutes(routes) {
+function applyRoutes(routes, airports) {
   if (!window.simplemaps_usmap_mapdata) return;
-  createPoints(routes);
+  createPoints(routes, airports);
   window.simplemaps_usmap?.load?.();
   window.requestAnimationFrame(() => window.simplemaps_usmap?.resize?.());
 }
@@ -59,15 +80,16 @@ export function MapPage() {
   useEffect(() => {
     if (selectedDepTime === undefined) {
       setRoutes([]);
-      applyRoutes([]);
+      applyRoutes([], []);
       return;
     }
     fetch(`${API}/day/${selectedDay}?dep_time=${selectedDepTime}`)
       .then((response) => response.json())
       .then((flights) => {
         const drawnRoutes = flightsToRoutes(flights);
+        const airports = flightsToAirports(flights);
         setRoutes(drawnRoutes);
-        applyRoutes(drawnRoutes);
+        applyRoutes(drawnRoutes, airports);
       })
       .catch((error) => console.log(error));
   }, [selectedDepTime, selectedDay]);

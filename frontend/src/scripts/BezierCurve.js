@@ -1,8 +1,9 @@
 class Curve {
-  constructor(x1, y1, x2, y2, curveNum) {
+  constructor(x1, y1, x2, y2, curveNum, flight_name, description) {
+    this.description = description;
     this.curveNum = curveNum;
     this.points = [];
-
+    this.flight_name = flight_name;
     const dx = x2 - x1;
     const dy = y2 - y1;
     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -35,6 +36,8 @@ class Curve {
     const pointsList = [];
     for (let i = 0; i < this.points.length; i++) {
       pointsList.push({
+        name: this.flight_name,
+        description: this.description,
         lat: String(this.points[i][1]),
         lng: String(this.points[i][0]),
         color: "#FFFFFF",
@@ -46,15 +49,37 @@ class Curve {
   }
 }
 
-export function createPoints(routes) {
+export function createPoints(routes, airportLocations) {
   const locations = window.simplemaps_usmap_mapdata.locations;
   for (const k of Object.keys(locations)) {
-    if (Number(k) >= 341) delete locations[k];
+    delete locations[k];
   }
-  let nextNumber = 341;
 
+  let nextNumber = 0;
+  for (const a of airportLocations) {
+    locations[nextNumber] = a;
+    nextNumber++;
+  }
   for (const r of routes) {
-    const curve = new Curve(r.x1, r.y1, r.x2, r.y2, nextNumber);
+    const flight_name = r.origin + " → " + r.dest;
+    const description =
+      "Arrives at: " +
+      Math.floor(r.arrTime / 100) +
+      ":" +
+      (r.arrTime % 100) +
+      "<br>" +
+      r.originCity +
+      " to <br>" +
+      r.destCity;
+    const curve = new Curve(
+      r.x1,
+      r.y1,
+      r.x2,
+      r.y2,
+      nextNumber,
+      flight_name,
+      description,
+    );
     for (const p of curve.getPoints()) {
       locations[nextNumber] = p;
       nextNumber++;
