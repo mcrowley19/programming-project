@@ -48,6 +48,13 @@ def airport_origin_filter(airport_code):
     airport_code_df = df[df["ORIGIN"] == airport_code]
     return airport_code_df.to_dict(orient="records")
 
+def airport_origin_filter_df(airport_code):
+    """"
+    This function returns a DF w/ correct airport
+    """
+    airport_df = df[df["ORIGIN"] == airport_code]
+    return airport_df
+
 def cancel_filter(state):
     """"
     This function returns a list of dicts. Each dict is a flight which is cancelled
@@ -60,6 +67,13 @@ def _day_df(day):
 @app.route('/day/<day>/dep-times')
 def day_dep_times(day):
     dep_times_int = _day_df(day)["DEP_TIME"].dropna().astype(int)
+    unique_times = dep_times_int.unique()
+    body = pd.Series(sorted(unique_times)).to_json(orient="values")
+    return Response(body, mimetype="application/json")
+
+@app.route('/day/<day>/<airport>/dep-times')
+def day_dep_times_by_airport(day,airport):
+    dep_times_int = airport_origin_filter_df(airport).loc[_fl_day == int(day)].dropna().astype(int)
     unique_times = dep_times_int.unique()
     body = pd.Series(sorted(unique_times)).to_json(orient="values")
     return Response(body, mimetype="application/json")
@@ -100,6 +114,8 @@ def late_vs_ontime_by_day_chart():
 @app.route('/')
 def home():
     return 'Flask API is running. Try /day/1'
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
