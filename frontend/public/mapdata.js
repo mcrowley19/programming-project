@@ -17,7 +17,7 @@ var simplemaps_usmap_mapdata = {
     location_color: "#ED2B2B",
     location_opacity: 1,
     location_url: "",
-    location_size: 10,
+    location_size: 8,
     location_border_color: "#FFFFFF",
     location_border: 0.5,
     all_locations_inactive: "no",
