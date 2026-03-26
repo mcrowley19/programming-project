@@ -117,7 +117,7 @@ def cancelled():
     return cancelledFlights
 
 @app.route('/<airport>')
-def airport():
+def airport(airport):
     """
     This returns a list of flights from a certain airport
     """

@@ -52,7 +52,7 @@ def build_late_vs_ontime_by_day_fig():
 def build_flights_per_hour_fig():
     df = pd.read_csv(DATA_FILE)
 
-    df["DEP_HOUR"] = int((df["CRS_DEP_TIME"] // 100))
+    df["DEP_HOUR"] = ((df["CRS_DEP_TIME"] // 100).astype(int))
 
     grouped = (
         df.groupby("DEP_HOUR")
