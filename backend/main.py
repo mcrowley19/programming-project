@@ -76,7 +76,6 @@ def date(day):
         dep_int = day_flights["DEP_TIME"].fillna(-1).astype(int)
         day_flights = day_flights[dep_int == requested_dep_time]
     flight_records = day_flights.to_dict(orient="records")
-    print(json.dumps(flight_records))
     return json.dumps(flight_records)
     
 @app.route('/cancelled')

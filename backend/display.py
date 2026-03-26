@@ -23,6 +23,8 @@ def build_late_vs_ontime_by_carrier_fig():
         barmode="group",
         title="On-Time vs Late Flights by Carrier",
         labels={"MKT_CARRIER": "Carrier", "value": "Flights", "variable": "Status"},
+        width = 1200,
+        height = 500
     )
 
     return json.dumps(fig, cls=PlotlyJSONEncoder)
@@ -44,6 +46,8 @@ def build_late_vs_ontime_by_day_fig():
         barmode="group",
         title="On-Time vs Late Flights by Day",
         labels={"DAY": "Day of Month", "value": "Flights", "variable": "Status"},
+        width = 1200,
+        height = 500
     )
 
     return json.dumps(fig, cls=PlotlyJSONEncoder)

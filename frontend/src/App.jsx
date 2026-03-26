@@ -1,9 +1,9 @@
-import Plot from "react-plotly.js";
 import { useEffect, useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { createPoints } from "./BezierCurve";
 import { coords } from "./airportCoords";
 import { PageHeader } from "./components/PageHeader";
+import { ChartsPage } from "./ChartsPage";
 
 function flightsToRoutes(flights) {
   return flights
@@ -108,26 +108,6 @@ function MapPage() {
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-function ChartsPage() {
-  const [graphs, setGraphs] = useState(null);
-  useEffect(() => {
-    fetch(`${API}/charts/late-vs-ontime-day`)
-      .then((response) => response.json())
-      .then(setGraphs)
-      .catch((error) => console.log(error));
-  }, []);
-  if (!graphs) {
-    return <div className="text-white p-10">Loading Charts...</div>;
-  }
-  return (
-    <div className="h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-gradient-to-br from-gray-900 to-[#13162c]">
-      <PageHeader />
-
-      <Plot data={graphs.data} layout={graphs.layout} />
     </div>
   );
 }
