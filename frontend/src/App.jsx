@@ -3,33 +3,11 @@ import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { createPoints } from "./BezierCurve";
 import { coords } from "./airportCoords";
-function PageHeader() {
-  return (
-    <header
-      className="flex-shrink-0 flex min-w-max items-center gap-2 m-2 px-3 py-1
-        rounded-2xl bg-white/10 backdrop-blur-[10px] border border-white/20 w-full"
-    >
-      <div className="flex gap-3 items-center">
-        <touchable
-          type="touchable"
-          className="flex gap-3 items-center px-4 py-2 min-w-max font-semibold text-white rounded-full transition-all hover:opacity-90"
-        >
-          <h1 className="text-sm font-bold uppercase tracking-[0.2em] whitespace-nowrap">
-            Flight History
-          </h1>
-        </touchable>
-      </div>
-
-      <nav className="flex flex-1 gap-1 justify-center items-center"></nav>
-    </header>
-  );
-}
+import { PageHeader } from "./components/PageHeader";
 
 function flightsToRoutes(flights) {
   return flights
-    .filter(
-      (flight) => coords[flight.ORIGIN] && coords[flight.DEST],
-    )
+    .filter((flight) => coords[flight.ORIGIN] && coords[flight.DEST])
     .map((flight) => ({
       time: Number(flight.DEP_TIME),
       x1: Number(coords[flight.ORIGIN].lng),
@@ -107,9 +85,7 @@ function MapPage() {
       </div>
 
       {depTimes.length > 0 && (
-        <div
-          className="shrink-0 border-t border-white/20 bg-black/30 px-3 py-2 flex flex-col gap-2 text-white text-xs"
-        >
+        <div className="shrink-0 border-t border-white/20 bg-black/30 px-3 py-2 flex flex-col gap-2 text-white text-xs">
           <label className="flex items-center gap-2">
             <span className="shrink-0 tabular-nums">DEP {selectedDepTime}</span>
             <input
@@ -125,9 +101,7 @@ function MapPage() {
           </label>
           <div className="max-h-24 overflow-y-auto rounded border border-white/20 bg-white/5 px-2 py-1">
             {routes.map((route, index) => (
-              <div
-                key={`${route.origin}-${route.dest}-${route.time}-${index}`}
-              >
+              <div key={`${route.origin}-${route.dest}-${route.time}-${index}`}>
                 {route.time} {route.origin} → {route.dest}
               </div>
             ))}
@@ -161,15 +135,6 @@ function ChartsPage() {
 export default function App() {
   return (
     <>
-      <div className="flex fixed top-3 right-3 z-50 gap-2">
-        <Link to="/" className="px-3 py-1 text-white rounded bg-white/20">
-          Map
-        </Link>
-        <Link to="/charts" className="px-3 py-1 text-white rounded bg-white/20">
-          Charts
-        </Link>
-      </div>
-
       <Routes>
         <Route path="/" element={<MapPage />} />
         <Route path="/charts" element={<ChartsPage />} />
