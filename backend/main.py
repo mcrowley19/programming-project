@@ -16,13 +16,12 @@ This code reads the csv file from the cleaned dataset and then it sets up API en
 API endpoints:
 - /day/<day> - returns a list of flights (as dicts) that occured
 - /day/<day>/dep-times - returns a list of unique departure times for the given day
+- /<airport> - returns a list of flights originated from the given airport
 - /cancelled - returns a list of cancelled flights
 
 Endpoints for Charts:
 - /charts/late-vs-ontime-carrier - returns a bar graph comparing late vs ontime flights by carrier
 - /charts/late-vs-ontime-day - returns a bar graph comparing late vs ontime flights by day
-
-In progress:
 - /charts/busiest-airports - returns a bar graph of the airports with most flights in the dataset
 - /charts/flights-by-hour - returns a line graph of the number of flights departing at each hour of the day
 
@@ -102,6 +101,13 @@ def cancelled():
     """
     cancelledFlights=cancel_filter(True)
     return cancelledFlights
+
+@app.route('/<airport>')
+def airport():
+    """
+    This returns a list of flights from a certain airport
+    """
+    return airport_origin_filter(airport)
 
 @app.route('/charts/late-vs-ontime-carrier')
 def late_vs_ontime_by_carrier_chart():
