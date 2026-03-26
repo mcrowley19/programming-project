@@ -23,6 +23,8 @@ var simplemaps_usmap_mapdata = {
     all_locations_inactive: "no",
     all_locations_hidden: "no",
     location_type: "circle",
+    show_legend: "no",
+    import_labels: "no",
   },
   // cleaned up state_specific to make it cleaner.
   state_specific: {
@@ -394,7 +396,4 @@ var simplemaps_usmap_mapdata = {
     338: { lat: "36.28", lng: "-94.31", name: "XNA" },
     340: { lat: "32.66", lng: "-114.61", name: "YUM" },
   },
-  regions: {},
-  labels: {},
-  legend: { entries: [] },
 };

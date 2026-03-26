@@ -77,11 +77,11 @@ function MapPage() {
   const maxTimeIndex = Math.max(0, depTimes.length - 1);
 
   return (
-    <div className="h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-gradient-to-br from-gray-900 to-[#13162c]">
+    <div className="h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-linear-to-br from-gray-900 to-[#13162c]">
       <PageHeader />
 
       <div className="overflow-auto flex-1 min-h-0">
-        <div id="map" className="mx-auto w-full h-full bg-gray-800"></div>
+        <div id="map" className="mx-auto w-7/10 h-96 bg-[#13162c]"></div>
       </div>
 
       {depTimes.length > 0 && (

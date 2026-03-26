@@ -26,7 +26,15 @@ def build_late_vs_ontime_by_carrier_fig():
         width = 1200,
         height = 500
     )
-
+    fig.update_layout(      
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor= 'rgba(0,0,0,0)',
+        font=dict(color="white"), 
+        title_font=dict(color="white"),
+        xaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
+        yaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
+        legend=dict(font=dict(color="white"))
+    )
     return json.dumps(fig, cls=PlotlyJSONEncoder)
 
 
@@ -49,7 +57,15 @@ def build_late_vs_ontime_by_day_fig():
         width = 1200,
         height = 500
     )
-
+    fig.update_layout(      
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor= 'rgba(0,0,0,0)',
+        font=dict(color="white"), 
+        title_font=dict(color="white"),
+        xaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
+        yaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
+        legend=dict(font=dict(color="white"))
+    )
     return json.dumps(fig, cls=PlotlyJSONEncoder)
 
 
@@ -70,7 +86,17 @@ def build_flights_per_hour_fig():
         title="Number of Flights Departing by Hour",
         labels={"DEP_HOUR": "Departure Hour", "FLIGHTS": "Number of Flights"},
     )
-
+    fig.update_layout(      
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor= 'rgba(0,0,0,0)',
+        font=dict(color="white"), 
+        title_font=dict(color="white"),
+        xaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
+        yaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
+        legend=dict(font=dict(color="white"))
+    )
+        
+    
     return json.dumps(fig, cls=PlotlyJSONEncoder)
 
 
@@ -83,6 +109,18 @@ def build_top_ten_busiest_airports_fig():
         y='count',
         title="Ten Busiest Airports by Departures" ,
         labels={'ORIGIN': 'Origin Airport', 'count': 'Number of Flights'},
+        
     )
+    fig.update_layout(      
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor= 'rgba(0,0,0,0)',
+        font=dict(color="white"), 
+        title_font=dict(color="white"),
+        xaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
+        yaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
+        legend=dict(font=dict(color="white"))
+        
+    )
+    
     return json.dumps(fig, cls=PlotlyJSONEncoder)
 

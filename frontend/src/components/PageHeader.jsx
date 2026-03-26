@@ -3,20 +3,23 @@ import { Link, Route, Routes } from "react-router-dom";
 export function PageHeader() {
   return (
     <>
-      <div className="flex fixed top-3 right-3 z-50 gap-2  pt-1.5">
-        <Link to="/" className="text-base text-white font-bold uppercase ">
+      <div className="flex fixed top-3 right-3 z-50 gap-2  pt-2 pr-5">
+        <Link
+          to="/"
+          className="text-sm text-white font-bold uppercase tracking-[0.2em] whitespace-nowrap "
+        >
           Map
         </Link>
-        <p className="text-white text-base  uppercase tracking-[0.2em] ">|</p>
+        <p className="text-white text-sm  uppercase tracking-[0.2em] ">|</p>
         <Link
           to="/charts"
-          className="text-base text-white font-bold uppercase "
+          className="text-sm text-white font-bold uppercase tracking-[0.2em] whitespace-nowrap "
         >
           Charts
         </Link>
       </div>
       <header
-        className="flex-shrink-0 flex min-w-max items-center gap-2 m-2 px-3 py-1
+        className="shrink-0 flex min-w-max items-center gap-2 m-2 px-3 py-1
         rounded-2xl bg-white/10 backdrop-blur-[10px] border border-white/20 w-full"
       >
         <div className="flex gap-3 items-center">
