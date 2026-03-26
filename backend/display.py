@@ -47,3 +47,17 @@ def build_late_vs_ontime_by_day_fig():
     )
 
     return json.dumps(fig, cls=PlotlyJSONEncoder)
+
+
+def build_top_ten_busiest_airports_fig():
+    df=pd.read_csv(DATA_FILE)
+    top10=df['ORIGIN'].value_counts().nlargest(10).reset_index()
+    fig = px.bar(
+        top10,
+        x='ORIGIN', 
+        y='count',
+        title="Ten Busiest Airports by Departures" ,
+        labels={'ORIGIN': 'Origin Airport', 'count': 'Number of Flights'},
+    )
+    return json.dumps(fig, cls=PlotlyJSONEncoder)
+
