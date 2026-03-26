@@ -56,12 +56,8 @@ Sample flight data dict for reference:
     "ORIGIN_WAC": 22
   },
 """
-def airport_origin_filter(airport_code):
-    """"
-    This function returns a list of dicts. Each dict is a row with the correct airport code
-    """
-    airport_code_df = df[df["ORIGIN"] == airport_code]
-    return airport_code_df.to_dict(orient="records")
+
+
 
 def airport_origin_filter_df(airport_code):
     """"
@@ -115,12 +111,14 @@ def cancelled():
     cancelledFlights=cancel_filter(True)
     return cancelledFlights
 
-@app.route('/<airport>')
+@app.route('/airport/<airport>')
 def airport(airport):
     """
     This returns a list of flights from a certain airport
     """
-    return airport_origin_filter(airport)
+    airport_code_df = df[df["ORIGIN"] == airport]
+    return airport_code_df.to_dict(orient="records")
+
 
 @app.route('/charts/late-vs-ontime-carrier')
 def late_vs_ontime_by_carrier_chart():

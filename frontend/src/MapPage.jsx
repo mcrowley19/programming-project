@@ -21,26 +21,28 @@ function flightsToRoutes(flights) {
     }));
 }
 function flightsToAirports(flights) {
-  return flights
-    .filter((flight) => coords[flight.ORIGIN] && coords[flight.DEST])
-    .reduce((acc, flight) => {
-      (acc.push({
+  let acc = [];
+  for (const flight of flights) {
+    if (coords[flight.ORIGIN] && coords[flight.DEST]) {
+      acc.push({
         lng: Number(coords[flight.ORIGIN].lng),
         lat: Number(coords[flight.ORIGIN].lat),
         name: flight.ORIGIN,
-      }),
-        acc.push({
-          lng: Number(coords[flight.DEST].lng),
-          lat: Number(coords[flight.DEST].lat),
-          name: flight.DEST,
-        }));
-      return acc;
-    }, []);
+      });
+      acc.push({
+        lng: Number(coords[flight.DEST].lng),
+        lat: Number(coords[flight.DEST].lat),
+        name: flight.DEST,
+      });
+    }
+  }
+
+  return acc;
 }
 
-function applyRoutes(routes, airports) {
+function applyRoutes(routes, airports, airportData) {
   if (!window.simplemaps_usmap_mapdata) return;
-  createPoints(routes, airports);
+  createPoints(routes, airports, airportData);
   window.simplemaps_usmap?.load?.();
   window.requestAnimationFrame(() => window.simplemaps_usmap?.resize?.());
 }
@@ -61,18 +63,6 @@ export function MapPage() {
         setSelectedTimeIndex(0);
       })
       .catch((error) => console.log(error));
-
-    const resizeMap = () => window.simplemaps_usmap?.resize?.();
-    const resizeFrameId = window.requestAnimationFrame(resizeMap);
-    const resizeObserver =
-      typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(resizeMap)
-        : null;
-    resizeObserver?.observe(mapElement);
-    return () => {
-      window.cancelAnimationFrame(resizeFrameId);
-      resizeObserver?.disconnect();
-    };
   }, []);
 
   const selectedDepTime = depTimes[selectedTimeIndex];
@@ -80,18 +70,44 @@ export function MapPage() {
   useEffect(() => {
     if (selectedDepTime === undefined) {
       setRoutes([]);
-      applyRoutes([], []);
+      applyRoutes([], [], 0);
       return;
     }
-    fetch(`${API}/day/${selectedDay}?dep_time=${selectedDepTime}`)
-      .then((response) => response.json())
-      .then((flights) => {
-        const drawnRoutes = flightsToRoutes(flights);
-        const airports = flightsToAirports(flights);
-        setRoutes(drawnRoutes);
-        applyRoutes(drawnRoutes, airports);
-      })
-      .catch((error) => console.log(error));
+    async function fetchData() {
+      const response = await fetch(
+        `${API}/day/${selectedDay}?dep_time=${selectedDepTime}`,
+      );
+      const flights = await response.json();
+      const airportCodes = [];
+      const airportNames = [];
+      for (const flight of flights) {
+        if (!airportCodes.includes(flight.ORIGIN)) {
+          airportCodes.push(flight.ORIGIN);
+          airportNames.push(flight.ORIGIN_CITY_NAME);
+        }
+        if (!airportCodes.includes(flight.DEST)) {
+          airportCodes.push(flight.DEST);
+          airportNames.push(flight.DEST_CITY_NAME);
+        }
+      }
+
+      const airportData = {};
+      for (let i = 0; i < airportCodes.length; i++) {
+        const r = await fetch(`${API}/airport/${airportCodes[i]}`);
+        const data = await r.json();
+        airportData[airportCodes[i]] = {
+          count: data.length,
+          name: airportNames[i],
+        };
+      }
+
+      const drawnRoutes = flightsToRoutes(flights);
+      const airports = flightsToAirports(flights);
+      setRoutes(drawnRoutes);
+      applyRoutes(drawnRoutes, airports, airportData);
+    }
+
+    fetchData().catch((error) => console.log(error));
   }, [selectedDepTime, selectedDay]);
 
   const maxTimeIndex = Math.max(0, depTimes.length - 1);

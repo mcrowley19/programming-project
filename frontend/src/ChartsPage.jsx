@@ -1,7 +1,7 @@
 import Plot from "react-plotly.js";
 import { useEffect, useState } from "react";
 import { PageHeader } from "./components/PageHeader";
-import { Button } from "react";
+
 export function ChartsPage() {
   const [LVOTDay, setLVOTDay] = useState(null);
   const [LVOTCarrier, setLVOTCarrier] = useState(null);
@@ -49,7 +49,7 @@ export function ChartsPage() {
   }
 
   return (
-    <div className="h-screen  align-middle w-screen max-h-screen items-center max-w-full overflow-hidden flex flex-col bg-gradient-to-br from-gray-900 to-[#13162c]">
+    <div className="h-screen  align-middle w-screen max-h-screen items-center max-w-full overflow-hidden flex flex-col bg-linear-to-br from-gray-900 to-[#13162c]">
       <PageHeader />
       <div className="flex flex-1 justify-center items-center">
         <button

@@ -49,7 +49,7 @@ class Curve {
   }
 }
 
-export function createPoints(routes, airportLocations) {
+export function createPoints(routes, airportLocations, airportData) {
   const locations = window.simplemaps_usmap_mapdata.locations;
   for (const k of Object.keys(locations)) {
     delete locations[k];
@@ -57,6 +57,8 @@ export function createPoints(routes, airportLocations) {
 
   let nextNumber = 0;
   for (const a of airportLocations) {
+    const data = airportData[a.name];
+    a["description"] = data.name + "<br> Number of flights: " + data.count;
     locations[nextNumber] = a;
     nextNumber++;
   }
