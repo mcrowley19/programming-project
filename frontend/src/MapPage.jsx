@@ -113,7 +113,7 @@ export function MapPage() {
   const maxTimeIndex = Math.max(0, depTimes.length - 1);
 
   return (
-    <div className=" relative h-screen w-screen max-h-screen max-w-full overflow-hidden flex flex-col bg-linear-to-br from-gray-900 to-[#13162c]">
+    <div className=" relative h-screen w-full max-h-screen max-w-full overflow-hidden flex flex-col bg-linear-to-br from-gray-900 to-[#13162c]">
       <PageHeader />
 
       <div className="overflow-auto pt-13 flex-1 min-h-0">
