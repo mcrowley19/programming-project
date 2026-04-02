@@ -10,6 +10,7 @@ export function DaySlider({
   routes,
 }) {
   const [daySetterShow, setDaySetterShow] = useState(false);
+  const [timeProgress, setTimeProgress] = useState(false);
   const [draftTimeIndex, setDraftTimeIndex] = useState(selectedTimeIndex);
   const days = ["SAT", "SUN", "MON", "TUE", "WED", "THURS"];
 
@@ -24,6 +25,21 @@ export function DaySlider({
     }
   }
 
+  useEffect(() => {
+    progressTime(timeProgress);
+  });
+
+  async function progressTime(timeProgress) {
+    await timeout(3000);
+    if (timeProgress) {
+      setDraftTimeIndex((prev) => prev + 1);
+      commitSliderValue();
+    }
+  }
+  // Found on Stackoverflow
+  function timeout(delay: number) {
+    return new Promise((res) => setTimeout(res, delay));
+  }
   return (
     <>
       <button
@@ -49,6 +65,12 @@ export function DaySlider({
       {depTimes.length > 0 && (
         <div className="shrink-0 border-t border-white/20 bg-black/30 px-3 py-2 flex flex-col gap-2 text-white text-xs">
           <label className="flex items-center gap-2">
+            <button
+              onClick={() => setTimeProgress((prev) => !prev)}
+              className="text-white hover:text-white/20 text-xl"
+            >
+              {timeProgress ? "⏸︎" : "▶"}
+            </button>
             <span className="shrink-0 tabular-nums">
               {days[selectedDay - 1]}{" "}
               {Math.floor(selectedDepTime / 100) < 10 ? 0 : ""}
@@ -61,7 +83,9 @@ export function DaySlider({
               min={0}
               max={maxTimeIndex}
               value={Math.min(draftTimeIndex, maxTimeIndex)}
-              onChange={(event) => setDraftTimeIndex(Number(event.target.value))}
+              onChange={(event) =>
+                setDraftTimeIndex(Number(event.target.value))
+              }
               onMouseUp={commitSliderValue}
               className="w-full"
             />
