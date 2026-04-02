@@ -28,7 +28,7 @@ export function DaySlider({
     <>
       <button
         className=" w-20 justify-start border-t border-l border-r rounded-tl border-white/20 bg-black/30 py-1 text-white text-sm"
-        onChange={() => setDaySetterShow((prev) => !prev)}
+        onClick={() => setDaySetterShow((prev) => !prev)}
       >
         {daySetterShow ? "▼" : "▲"}
       </button>
