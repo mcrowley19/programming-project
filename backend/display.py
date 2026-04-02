@@ -24,6 +24,7 @@ def build_late_vs_ontime_by_carrier_fig():
         title="On-Time vs Late Flights by Carrier",
         labels={"MKT_CARRIER": "Carrier", "value": "Flights", "variable": "Status"},
         width = 1200,
+        color_discrete_sequence=["#009200", "#BC0000"],
         height = 500
     )
     fig.update_layout(      
@@ -55,6 +56,7 @@ def build_late_vs_ontime_by_day_fig():
         title="On-Time vs Late Flights by Day",
         labels={"DAY": "Day of Month", "value": "Flights", "variable": "Status"},
         width = 1200,
+        color_discrete_sequence=["#009200", "#BC0000"],
         height = 500
     )
     fig.update_layout(      
@@ -100,16 +102,18 @@ def build_flights_per_hour_fig():
     return json.dumps(fig, cls=PlotlyJSONEncoder)
 
 
-def build_top_ten_busiest_airports_fig():
+def build_top_100_busiest_airports_fig():
     df=pd.read_csv(DATA_FILE)
-    top10=df['ORIGIN'].value_counts().nlargest(10).reset_index()
+    top100=df['ORIGIN'].value_counts().nlargest(100).reset_index()
+    
     fig = px.bar(
-        top10,
+        top100,
         x='ORIGIN', 
         y='count',
-        title="Ten Busiest Airports by Departures" ,
+        title="Top 100 Busiest Airports by Departures" ,
         labels={'ORIGIN': 'Origin Airport', 'count': 'Number of Flights'},
-        
+        color_continuous_scale='Inferno',
+        color='count'
     )
     fig.update_layout(      
         plot_bgcolor='rgba(0,0,0,0)',
