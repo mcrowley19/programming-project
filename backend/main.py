@@ -132,7 +132,7 @@ def late_vs_ontime_by_day_chart():
 
 @app.route('/charts/busiest-airports')
 def flights_by_airport_chart():
-    fig = build_top_ten_busiest_airports_fig()
+    fig = build_top_100_busiest_airports_fig()
     return fig
 
 @app.route('/charts/flights-by-hour')
