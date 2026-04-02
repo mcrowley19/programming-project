@@ -17,7 +17,7 @@ class Curve {
     const controlX = midX + perpX * (distance * 0.35);
     const controlY = midY + perpY * (distance * 0.35);
 
-    for (let t = 0; t <= 1; t += 0.01) {
+     for (let t = 0; t <= 1; t += 0.3/distance) {
       const x =
         Math.pow(1 - t, 2) * x1 +
         2 * (1 - t) * t * controlX +
@@ -42,7 +42,7 @@ class Curve {
         lng: String(this.points[i][0]),
         color: "#FFFFFF",
         shape: "circle",
-        size: 2,
+        size: 4,
       });
     }
     return pointsList;
