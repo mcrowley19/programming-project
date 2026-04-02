@@ -15,7 +15,7 @@ class Curve {
     const perpY = dx / distance;
 
     const controlX = midX + perpX * (distance * 0.35);
-    const controlY = midY + perpY * (distance * 0.35);
+    const controlY = midY + Math.abs(perpY * (distance * 0.25));
 
      for (let t = 0; t <= 1; t += 0.3/distance) {
       const x =
@@ -42,7 +42,7 @@ class Curve {
         lng: String(this.points[i][0]),
         color: "#FFFFFF",
         shape: "circle",
-        size: 4,
+        size: 3,
       });
     }
     return pointsList;
@@ -56,12 +56,6 @@ export function createPoints(routes, airportLocations, airportData) {
   }
 
   let nextNumber = 0;
-  for (const a of airportLocations) {
-    const data = airportData[a.name];
-    a["description"] = data.name + "<br> Number of flights: " + data.count;
-    locations[nextNumber] = a;
-    nextNumber++;
-  }
   for (const r of routes) {
     const flight_name = r.origin + " → " + r.dest;
     const first_digits = Math.floor(r.arrTime / 100);
@@ -98,5 +92,13 @@ export function createPoints(routes, airportLocations, airportData) {
       locations[nextNumber] = p;
       nextNumber++;
     }
+
+  for (const a of airportLocations) {
+    const data = airportData[a.name];
+    a["description"] = data.name + "<br> Number of flights: " + data.count;
+    locations[nextNumber] = a;
+    nextNumber++;
+  }
+
   }
 }

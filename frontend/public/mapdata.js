@@ -19,7 +19,7 @@ var simplemaps_usmap_mapdata = {
     location_url: "",
     location_size: 15,
     location_border_color: "#FFFFFF",
-    location_border: 0.5,
+    location_border: 1,
     all_locations_inactive: "no",
     all_locations_hidden: "no",
     location_type: "circle",
