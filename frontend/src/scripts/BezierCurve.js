@@ -56,12 +56,6 @@ export function createPoints(routes, airportLocations, airportData) {
   }
 
   let nextNumber = 0;
-  for (const a of airportLocations) {
-    const data = airportData[a.name];
-    a["description"] = data.name + "<br> Number of flights: " + data.count;
-    locations[nextNumber] = a;
-    nextNumber++;
-  }
   for (const r of routes) {
     const flight_name = r.origin + " → " + r.dest;
     const first_digits = Math.floor(r.arrTime / 100);
@@ -98,5 +92,13 @@ export function createPoints(routes, airportLocations, airportData) {
       locations[nextNumber] = p;
       nextNumber++;
     }
+
+  for (const a of airportLocations) {
+    const data = airportData[a.name];
+    a["description"] = data.name + "<br> Number of flights: " + data.count;
+    locations[nextNumber] = a;
+    nextNumber++;
+  }
+
   }
 }
