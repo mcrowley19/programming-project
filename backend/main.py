@@ -16,7 +16,8 @@ This code reads the csv file from the cleaned dataset and then it sets up API en
 API endpoints:
 - /day/<day> - returns a list of flights (as dicts) that occured
 - /day/<day>/dep-times - returns a list of unique departure times for the given day
-- /<airport> - returns a list of flights originated from the given airport
+- /day/<day>/<airport>/dep-times - returns a list of unique departure times for the given day and airport
+- /airport/<airport> - returns a list of flights originated from the given airport
 - /cancelled - returns a list of cancelled flights
 
 Endpoints for Charts:
@@ -29,8 +30,6 @@ Endpoints for Charts:
 
 df = pd.read_csv(DATA_FILE)
 _fl_day = pd.to_datetime(df["FL_DATE"], format="%m/%d/%Y").dt.day
-
-
 
 """"
 Sample flight data dict for reference:
@@ -56,8 +55,6 @@ Sample flight data dict for reference:
     "ORIGIN_WAC": 22
   },
 """
-
-
 
 def airport_origin_filter_df(airport_code):
     """"
