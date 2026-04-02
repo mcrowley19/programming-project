@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export function DaySlider({
   depTimes,
   selectedDay,
@@ -10,12 +10,25 @@ export function DaySlider({
   routes,
 }) {
   const [daySetterShow, setDaySetterShow] = useState(false);
+  const [draftTimeIndex, setDraftTimeIndex] = useState(selectedTimeIndex);
   const days = ["SAT", "SUN", "MON", "TUE", "WED", "THURS"];
+
+  useEffect(() => {
+    setDraftTimeIndex(Math.min(selectedTimeIndex, maxTimeIndex));
+  }, [selectedTimeIndex, maxTimeIndex]);
+
+  function commitSliderValue() {
+    const nextIndex = Math.min(draftTimeIndex, maxTimeIndex);
+    if (nextIndex !== selectedTimeIndex) {
+      setSelectedTimeIndex(nextIndex);
+    }
+  }
+
   return (
     <>
       <button
         className=" w-20 justify-start border-t border-l border-r rounded-tl border-white/20 bg-black/30 py-1 text-white text-sm"
-        onClick={() => setDaySetterShow((prev) => !prev)}
+        onChange={() => setDaySetterShow((prev) => !prev)}
       >
         {daySetterShow ? "▼" : "▲"}
       </button>
@@ -23,7 +36,7 @@ export function DaySlider({
         <div className=" flex justify-start text-white text-xl">
           {days.map((day, i) => (
             <button
-              onClick={() => {
+              onChange={() => {
                 setSelectedDay(i + 1);
               }}
               className=" w-20 justify-start border-r border-l border-t  hover:bg-white/10 border-white/20 bg-black/30  py-1 text-white text-sm"
@@ -47,10 +60,9 @@ export function DaySlider({
               type="range"
               min={0}
               max={maxTimeIndex}
-              value={Math.min(selectedTimeIndex, maxTimeIndex)}
-              onChange={(event) =>
-                setSelectedTimeIndex(Number(event.target.value))
-              }
+              value={Math.min(draftTimeIndex, maxTimeIndex)}
+              onChange={(event) => setDraftTimeIndex(Number(event.target.value))}
+              onMouseUp={commitSliderValue}
               className="w-full"
             />
           </label>
