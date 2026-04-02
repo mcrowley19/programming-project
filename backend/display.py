@@ -23,9 +23,7 @@ def build_late_vs_ontime_by_carrier_fig():
         barmode="group",
         title="On-Time vs Late Flights by Carrier",
         labels={"MKT_CARRIER": "Carrier", "value": "Flights", "variable": "Status"},
-        width = 1200,
         color_discrete_sequence=["#009200", "#BC0000"],
-        height = 500
     )
     fig.update_layout(      
         plot_bgcolor='rgba(0,0,0,0)',
@@ -55,9 +53,9 @@ def build_late_vs_ontime_by_day_fig():
         barmode="group",
         title="On-Time vs Late Flights by Day",
         labels={"DAY": "Day of Month", "value": "Flights", "variable": "Status"},
-        width = 1200,
         color_discrete_sequence=["#009200", "#BC0000"],
-        height = 500
+        width = 1200,
+        height = 700
     )
     fig.update_layout(      
         plot_bgcolor='rgba(0,0,0,0)',
@@ -86,7 +84,7 @@ def build_flights_per_hour_fig():
         x="DEP_HOUR",
         y="FLIGHTS",
         title="Number of Flights Departing by Hour",
-        labels={"DEP_HOUR": "Departure Hour", "FLIGHTS": "Number of Flights"},
+        labels={"DEP_HOUR": "Departure Hour", "FLIGHTS": "Number of Flights"}
     )
     fig.update_layout(      
         plot_bgcolor='rgba(0,0,0,0)',
@@ -97,20 +95,21 @@ def build_flights_per_hour_fig():
         yaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
         legend=dict(font=dict(color="white"))
     )
-        
+    fig.update_traces(mode="markers+lines", hovertemplate=None)
+    fig.update_layout(hovermode="x") 
     
     return json.dumps(fig, cls=PlotlyJSONEncoder)
 
 
-def build_top_100_busiest_airports_fig():
+def build_top_busiest_airports_fig():
     df=pd.read_csv(DATA_FILE)
-    top100=df['ORIGIN'].value_counts().nlargest(100).reset_index()
+    top50=df['ORIGIN'].value_counts().nlargest(50).reset_index()
     
     fig = px.bar(
-        top100,
+        top50,
         x='ORIGIN', 
         y='count',
-        title="Top 100 Busiest Airports by Departures" ,
+        title="Top 50 Busiest Airports by Departures" ,
         labels={'ORIGIN': 'Origin Airport', 'count': 'Number of Flights'},
         color_continuous_scale='Inferno',
         color='count'
@@ -123,8 +122,9 @@ def build_top_100_busiest_airports_fig():
         xaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
         yaxis=dict(title_font=dict(color="white"), tickfont=dict(color="white")),
         legend=dict(font=dict(color="white"))
-        
+
     )
+    fig.update_xaxes(tickangle=45)
     
     return json.dumps(fig, cls=PlotlyJSONEncoder)
 
