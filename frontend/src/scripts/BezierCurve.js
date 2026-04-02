@@ -64,11 +64,23 @@ export function createPoints(routes, airportLocations, airportData) {
   }
   for (const r of routes) {
     const flight_name = r.origin + " → " + r.dest;
+    const first_digits = Math.floor(r.arrTime / 100);
+    const second_digits = (r.arrTime % 100);
+    var first_digits_string;
+    var second_digits_string;
+
+    if(first_digits < 10){
+      first_digits_string = "0" + first_digits;
+    };
+
+    first_digits_string = first_digits < 10 ? first_digits_string = "0" + first_digits : first_digits;
+    second_digits_string = second_digits < 10 ? second_digits_string = "0" + second_digits : second_digits;
+
     const description =
       "Arrives at: " +
-      Math.floor(r.arrTime / 100) +
+      first_digits_string +
       ":" +
-      (r.arrTime % 100) +
+      second_digits_string +
       "<br>" +
       r.originCity +
       " to <br>" +
