@@ -137,6 +137,24 @@ def flights_by_hour_graph():
     fig = build_flights_per_hour_fig()
     return fig
 
+@app.route('/search/<search_string>')
+def search(search_string):
+    """
+    This method takes in a string and returns all flights that contain that in their:
+    - ORIGIN_CITY_NAME
+    - DEST_CITY_NAME
+    - ORIGIN
+    - DEST
+    - MKT_CARRIER
+    """
+    string = search_string.lower()
+    search_results = df[df["ORIGIN_CITY_NAME"].str.lower().str.contains(string) |
+                            df["DEST_CITY_NAME"].str.lower().str.contains(string) |
+                            df["ORIGIN"].str.lower().str.contains(string) |
+                            df["DEST"].str.lower().str.contains(string) |
+                            df["MKT_CARRIER"].str.lower().str.contains(string)]
+    return search_results.to_dict(orient="records")
+
 @app.route('/')
 def home():
     return 'Flask API is running. Try /day/1'
