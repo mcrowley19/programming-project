@@ -27,12 +27,11 @@ Made in React and Python by group 2.
 
 The backend is now running on http://127.0.0.1:5000/.
 To verify that it is running, open the link. You should see the message:
-"Flask API is running. Try /day/1"
+"Flask API is running. Try adding /day/1 to the current URL or /search/NY to search for flights to/from New York."
 
 ### Frontend
 
-1. In another terminal window, change directory to frontend with the command:
-    `cd frontend`
+1. In another terminal window, change directory to frontend with the command `cd frontend`
 2. Install dependencies with `npm install`
 3. Start Vite dev server with `npm run dev`
 
@@ -86,7 +85,6 @@ for (let t = 0; t <= 1; t += 0.01) {
     const x = Math.pow(1 - t, 2) * airport1X 
              + 2 * (1 - t) * t * controlX 
              + Math.pow(t, 2) * airport2X;
-
     const y = Math.pow(1 - t, 2) * airport1Y 
              + 2 * (1 - t) * t * controlY 
              + Math.pow(t, 2) * airport2Y;

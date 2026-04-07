@@ -19,6 +19,7 @@ API endpoints:
 - /day/<day>/<airport>/dep-times - returns a list of unique departure times for the given day and airport
 - /airport/<airport> - returns a list of flights originated from the given airport
 - /cancelled - returns a list of cancelled flights
+- /search/<search_string> - returns a list of flights with the search string in their ORIGIN_CITY_NAME, DEST_CITY_NAME, ORIGIN, DEST, or MKT_CARRIER
 
 Endpoints for Charts:
 - /charts/late-vs-ontime-carrier - returns a bar graph comparing late vs ontime flights by carrier
@@ -157,8 +158,7 @@ def search(search_string):
 
 @app.route('/')
 def home():
-    return 'Flask API is running. Try /day/1'
-
+    return 'Flask API is running. Try adding /day/1 to the current URL or /search/NY to search for flights to/from New York.'
 
 
 if __name__ == '__main__':
