@@ -26,20 +26,25 @@ export function DaySlider({
   }
 
   useEffect(() => {
-    progressTime(timeProgress);
-  });
+    if (!timeProgress) return;
+    const id = window.setInterval(() => {
+      setSelectedTimeIndex((prev) => {
+        if (prev >= maxTimeIndex) return prev;
+        return prev + 1;
+      });
+    }, 3000);
+    return () => window.clearInterval(id);
+  }, [timeProgress, maxTimeIndex]);
 
-  async function progressTime(timeProgress) {
-    await timeout(3000);
-    if (timeProgress) {
-      await setDraftTimeIndex((prev) => prev + 1);
-      await commitSliderValue();
+  useEffect(() => {
+    if (
+      timeProgress &&
+      maxTimeIndex >= 0 &&
+      selectedTimeIndex >= maxTimeIndex
+    ) {
+      setTimeProgress(false);
     }
-  }
-  // Found on Stackoverflow
-  function timeout(delay: number) {
-    return new Promise((res) => setTimeout(res, delay));
-  }
+  }, [timeProgress, selectedTimeIndex, maxTimeIndex]);
   return (
     <>
       <button
