@@ -14,12 +14,12 @@ DATA_FILE = './data/flightDataCleaned.csv'
 This code reads the csv file from the cleaned dataset and then it sets up API endpoints
 
 API endpoints:
-- /day/<day> - returns a list of flights (as dicts) that occured
+- /day/<day> - flights that day; optional ?dep_time= filters to that departure time
 - /day/<day>/dep-times - returns a list of unique departure times for the given day
 - /day/<day>/<airport>/dep-times - returns a list of unique departure times for the given day and airport
 - /airport/<airport> - returns a list of flights originated from the given airport
 - /cancelled - returns a list of cancelled flights
-- /search/<day>/<search_string> - returns flights on that day whose ORIGIN_CITY_NAME, DEST_CITY_NAME, ORIGIN, DEST, or MKT_CARRIER contain the search string
+- /search/<day>/<search_string> - optional ?dep_time= like /day/<day>, then text match on cities/airports/carrier
 
 Endpoints for Charts:
 - /charts/late-vs-ontime-carrier - returns a bar graph comparing late vs ontime flights by carrier
@@ -141,16 +141,22 @@ def flights_by_hour_graph():
 @app.route('/search/<day>/<search_string>')
 def search(day, search_string):
     """
-    This method takes in a string and returns all flights on the given calendar day (same
+    This method takes in a string and returns flights on the given calendar day (same
     meaning as /day/<day>) that contain that string in their:
     - ORIGIN_CITY_NAME
     - DEST_CITY_NAME
     - ORIGIN
     - DEST
     - MKT_CARRIER
+
+    Optional ?dep_time= same as /day/<day>.
     """
     string = search_string.lower()
     day_df = _day_df(day)
+    requested_dep_time = request.args.get("dep_time", type=int)
+    if requested_dep_time is not None:
+        dep_int = day_df["DEP_TIME"].fillna(-1).astype(int)
+        day_df = day_df[dep_int == requested_dep_time]
     mask = (
         day_df["ORIGIN_CITY_NAME"].str.lower().str.contains(string, regex=False, na=False)
         | day_df["DEST_CITY_NAME"].str.lower().str.contains(string, regex=False, na=False)

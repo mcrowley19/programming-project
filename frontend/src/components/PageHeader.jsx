@@ -1,30 +1,64 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
-export function PageHeader(selectedDay) {
+import { useEffect, useRef, useState } from "react";
+
+export function PageHeader(props) {
+  const selectedDay = props.selectedDay ?? 1;
+  const search = props.search ?? "";
+  const onSearch = props.onSearch;
+  const selectedDepTime = props.selectedDepTime;
+
   const [results, setResults] = useState([]);
+  const inputRef = useRef(null);
   const API = "http://127.0.0.1:5000";
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-    const value = e.target.search.value.trim();
-    if (!value) return;
-
-    fetch(`${API}/search/${selectedDay}/${value}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setResults(Array.isArray(data) ? data : []);
-      })
+  useEffect(() => {
+    const q = search.trim();
+    if (!q) {
+      setResults([]);
+      return;
+    }
+    const d = Math.max(1, Math.trunc(Number(selectedDay)) || 1);
+    let url = `${API}/search/${d}/${encodeURIComponent(q)}`;
+    if (selectedDepTime !== undefined) url += `?dep_time=${selectedDepTime}`;
+    fetch(url)
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((data) => setResults(Array.isArray(data) ? data : []))
       .catch(() => setResults([]));
-  };
+  }, [search, selectedDay, selectedDepTime]);
+
+  function submit(e) {
+    e.preventDefault();
+    const v = inputRef.current?.value.trim() ?? "";
+    if (onSearch) onSearch(v);
+  }
+
+  function clear() {
+    if (onSearch) onSearch("");
+    if (inputRef.current) inputRef.current.value = "";
+  }
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={submit}
+        className="fixed top-5 right-50 z-50 flex items-center gap-1"
+      >
         <input
-          className="flex fixed top-5 right-50 z-50 gap-2 pl-3 bg-white rounded-3xl text-sm  focus:outline-none "
-          placeholder={"Search..."}
+          ref={inputRef}
+          className="flex gap-2 pl-3 bg-white rounded-3xl text-sm focus:outline-none"
+          placeholder="Search..."
           name="search"
+          defaultValue={search}
         />
+        {search.trim() !== "" && (
+          <button
+            type="button"
+            onClick={clear}
+            className="rounded-full bg-white/90 px-2 py-1 text-xs text-gray-700 hover:bg-white"
+          >
+            Clear
+          </button>
+        )}
       </form>
       <div className="absolute top-11 right-30 z-50 w-[250px]">
         {results.map((item, index) => (

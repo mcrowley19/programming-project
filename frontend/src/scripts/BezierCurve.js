@@ -92,13 +92,12 @@ export function createPoints(routes, airportLocations, airportData) {
       locations[nextNumber] = p;
       nextNumber++;
     }
+  }
 
   for (const a of airportLocations) {
     const data = airportData[a.name];
     a["description"] = data.name + "<br> Number of flights: " + data.count;
     locations[nextNumber] = a;
     nextNumber++;
-  }
-
   }
 }

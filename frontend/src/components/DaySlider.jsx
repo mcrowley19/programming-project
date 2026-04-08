@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 export function DaySlider({
   depTimes,
   selectedDay,
@@ -18,33 +19,33 @@ export function DaySlider({
     setDraftTimeIndex(Math.min(selectedTimeIndex, maxTimeIndex));
   }, [selectedTimeIndex, maxTimeIndex]);
 
-  function commitSliderValue() {
-    const nextIndex = Math.min(draftTimeIndex, maxTimeIndex);
-    if (nextIndex !== selectedTimeIndex) {
-      setSelectedTimeIndex(nextIndex);
-    }
+  function commitSlider() {
+    const next = Math.min(draftTimeIndex, maxTimeIndex);
+    if (next !== selectedTimeIndex) setSelectedTimeIndex(next);
   }
 
   useEffect(() => {
     if (!timeProgress) return;
-    const id = window.setInterval(() => {
-      setSelectedTimeIndex((prev) => {
-        if (prev >= maxTimeIndex) return prev;
-        return prev + 1;
-      });
-    }, 3000);
-    return () => window.clearInterval(id);
-  }, [timeProgress, maxTimeIndex]);
+    const id = setInterval(() => {
+      setSelectedTimeIndex((prev) =>
+        prev >= maxTimeIndex ? prev : prev + 1,
+      );
+    }, 500);
+    return () => clearInterval(id);
+  }, [timeProgress, maxTimeIndex, setSelectedTimeIndex]);
 
   useEffect(() => {
-    if (
-      timeProgress &&
-      maxTimeIndex >= 0 &&
-      selectedTimeIndex >= maxTimeIndex
-    ) {
+    if (timeProgress && selectedTimeIndex >= maxTimeIndex)
       setTimeProgress(false);
-    }
   }, [timeProgress, selectedTimeIndex, maxTimeIndex]);
+
+  function depLabel() {
+    if (selectedDepTime == null) return "";
+    const h = Math.floor(selectedDepTime / 100);
+    const m = selectedDepTime % 100;
+    return `${h}:${m < 10 ? "0" : ""}${m}`;
+  }
+
   return (
     <>
       <button
@@ -74,27 +75,24 @@ export function DaySlider({
         <div className="shrink-0 border-t border-white/20 bg-black/30 px-3 py-2 flex flex-col gap-2 text-white text-xs">
           <label className="flex items-center gap-2">
             <button
-              onClick={() => setTimeProgress((prev) => !prev)}
+              type="button"
+              onClick={() =>
+                setTimeProgress((prev) => !prev)
+              }
               className="text-white hover:text-white/20 text-xl"
             >
               {timeProgress ? "⏸︎" : "▶"}
             </button>
             <span className="shrink-0 tabular-nums">
-              {days[selectedDay - 1]}{" "}
-              {Math.floor(selectedDepTime / 100) < 10 ? 0 : ""}
-              {Math.floor(selectedDepTime / 100)}:
-              {selectedDepTime < 10 ? 0 : ""}
-              {selectedDepTime % 100}
+              {days[selectedDay - 1]} {depLabel()}
             </span>
             <input
               type="range"
               min={0}
               max={maxTimeIndex}
               value={Math.min(draftTimeIndex, maxTimeIndex)}
-              onChange={(event) =>
-                setDraftTimeIndex(Number(event.target.value))
-              }
-              onMouseUp={commitSliderValue}
+              onChange={(e) => setDraftTimeIndex(Number(e.target.value))}
+              onPointerUp={commitSlider}
               className="w-full"
             />
           </label>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { PageHeader } from "./components/PageHeader";
 
 export function ChartsPage() {
+  const [search, setSearch] = useState("");
   const [LVOTDay, setLVOTDay] = useState(null);
   const [LVOTCarrier, setLVOTCarrier] = useState(null);
   const [BA, setBA] = useState(null);
@@ -50,7 +51,7 @@ export function ChartsPage() {
 
   return (
     <div className="h-screen  align-middle w-full max-h-screen items-center max-w-full overflow-hidden flex flex-col bg-linear-to-br from-gray-900 to-[#13162c]">
-      <PageHeader selectedDay={1} />
+      <PageHeader selectedDay={1} search={search} onSearch={setSearch} />
       <div className="flex flex-1 justify-center items-center">
         <button
           className="cursor-pointer text-3xl text-white font-bold uppercase m-10"
