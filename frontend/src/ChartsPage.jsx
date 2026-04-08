@@ -49,18 +49,18 @@ export function ChartsPage() {
   }
 
   return (
-    <div className="h-screen  align-middle w-screen max-h-screen items-center max-w-full overflow-hidden flex flex-col bg-linear-to-br from-gray-900 to-[#13162c]">
+    <div className="h-screen  align-middle w-full max-h-screen items-center max-w-full overflow-hidden flex flex-col bg-linear-to-br from-gray-900 to-[#13162c]">
       <PageHeader />
       <div className="flex flex-1 justify-center items-center">
         <button
-          className="text-3xl text-white font-bold uppercase m-10"
+          className="cursor-pointer text-3xl text-white font-bold uppercase m-10"
           onClick={prevChart}
         >
           {"<"}
         </button>
         <Plot data={chartData.data} layout={chartData.layout} />
         <button
-          className="text-3xl text-white font-bold uppercase m-10"
+          className="cursor-pointer text-3xl text-white font-bold uppercase m-10"
           onClick={nextChart}
         >
           {">"}

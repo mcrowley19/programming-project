@@ -23,7 +23,7 @@ def build_late_vs_ontime_by_carrier_fig():
         barmode="group",
         title="On-Time vs Late Flights by Carrier",
         labels={"MKT_CARRIER": "Carrier", "value": "Flights", "variable": "Status"},
-        color_discrete_sequence=["#6C6498", "#650101"],
+        color_discrete_sequence=["rgba(231, 232, 234, 1)", "rgba(237, 43, 43, 0.75)"],
     )
     fig.update_layout(      
         plot_bgcolor='rgba(0,0,0,0)',
@@ -53,7 +53,7 @@ def build_late_vs_ontime_by_day_fig():
         barmode="group",
         title="On-Time vs Late Flights by Day",
         labels={"DAY": "Day of Month", "value": "Flights", "variable": "Status"},
-        color_discrete_sequence=["#6C6498", "#650101"],
+        color_discrete_sequence=["rgba(231, 232, 234, 1)", "rgba(237, 43, 43, 0.75)"],
         width = 1200,
         height = 700
     )

@@ -16,8 +16,10 @@ This code reads the csv file from the cleaned dataset and then it sets up API en
 API endpoints:
 - /day/<day> - returns a list of flights (as dicts) that occured
 - /day/<day>/dep-times - returns a list of unique departure times for the given day
-- /<airport> - returns a list of flights originated from the given airport
+- /day/<day>/<airport>/dep-times - returns a list of unique departure times for the given day and airport
+- /airport/<airport> - returns a list of flights originated from the given airport
 - /cancelled - returns a list of cancelled flights
+- /search/<search_string> - returns a list of flights with the search string in their ORIGIN_CITY_NAME, DEST_CITY_NAME, ORIGIN, DEST, or MKT_CARRIER
 
 Endpoints for Charts:
 - /charts/late-vs-ontime-carrier - returns a bar graph comparing late vs ontime flights by carrier
@@ -29,8 +31,6 @@ Endpoints for Charts:
 
 df = pd.read_csv(DATA_FILE)
 _fl_day = pd.to_datetime(df["FL_DATE"], format="%m/%d/%Y").dt.day
-
-
 
 """"
 Sample flight data dict for reference:
@@ -56,8 +56,6 @@ Sample flight data dict for reference:
     "ORIGIN_WAC": 22
   },
 """
-
-
 
 def airport_origin_filter_df(airport_code):
     """"
@@ -140,10 +138,27 @@ def flights_by_hour_graph():
     fig = build_flights_per_hour_fig()
     return fig
 
+@app.route('/search/<search_string>')
+def search(search_string):
+    """
+    This method takes in a string and returns all flights that contain that in their:
+    - ORIGIN_CITY_NAME
+    - DEST_CITY_NAME
+    - ORIGIN
+    - DEST
+    - MKT_CARRIER
+    """
+    string = search_string.lower()
+    search_results = df[df["ORIGIN_CITY_NAME"].str.lower().str.contains(string) |
+                            df["DEST_CITY_NAME"].str.lower().str.contains(string) |
+                            df["ORIGIN"].str.lower().str.contains(string) |
+                            df["DEST"].str.lower().str.contains(string) |
+                            df["MKT_CARRIER"].str.lower().str.contains(string)]
+    return search_results.to_dict(orient="records")
+
 @app.route('/')
 def home():
-    return 'Flask API is running. Try /day/1'
-
+    return 'Flask API is running. Try adding /day/1 to the current URL or /search/NY to search for flights to/from New York.'
 
 
 if __name__ == '__main__':

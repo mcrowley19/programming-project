@@ -3,7 +3,7 @@ import { Link, Route, Routes } from "react-router-dom";
 export function PageHeader() {
   return (
     <>
-      <div className="flex fixed top-3 right-3 z-50 gap-2  pt-2 pr-5">
+      <div className="flex fixed top-3 right-3 z-50 gap-2 pt-2">
         <Link
           to="/"
           className="text-sm text-white font-bold uppercase tracking-[0.2em] whitespace-nowrap "
@@ -19,7 +19,7 @@ export function PageHeader() {
         </Link>
       </div>
       <header
-        className="shrink-0 flex min-w-max items-center gap-2 m-2 px-3 py-1
+        className="shrink-0 flex items-center gap-2 m-2 px-3 py-1
         rounded-2xl bg-white/10 backdrop-blur-[10px] border border-white/20 w-full"
       >
         <div className="flex gap-3 items-center">
