@@ -1,8 +1,35 @@
 import { Link, Route, Routes } from "react-router-dom";
-
+import { useState } from "react";
 export function PageHeader() {
+  const [results, setResults] = useState([]);
+  const API = "http://127.0.0.1:5000";
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const value = e.target.search.value;
+
+    fetch(`${API}/search/${day}/${value}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setResults(data);
+      });
+  };
   return (
     <>
+      <form onSubmit={handleSubmit}>
+        <input
+          className="flex fixed top-5 right-50 z-50 gap-2 pl-3 bg-white rounded-3xl text-sm  focus:outline-none "
+          placeholder={"Search..."}
+          name="search"
+        />
+      </form>
+      {results.map((item) => (
+        <div className="bg-white rounded-xl shadow p-4 h-32 flex items-center justify-center">
+          {item.name}
+        </div>
+      ))}
+
       <div className="flex fixed top-3 right-3 z-50 gap-2 pt-2">
         <Link
           to="/"

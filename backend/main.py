@@ -138,8 +138,8 @@ def flights_by_hour_graph():
     fig = build_flights_per_hour_fig()
     return fig
 
-@app.route('/search/<search_string>')
-def search(search_string):
+@app.route('/search/<day>/<search_string>')
+def search(day, search_string):
     """
     This method takes in a string and returns all flights that contain that in their:
     - ORIGIN_CITY_NAME
