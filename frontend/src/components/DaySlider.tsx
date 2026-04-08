@@ -32,8 +32,8 @@ export function DaySlider({
   async function progressTime(timeProgress) {
     await timeout(3000);
     if (timeProgress) {
-      setDraftTimeIndex((prev) => prev + 1);
-      commitSliderValue();
+      await setDraftTimeIndex((prev) => prev + 1);
+      await commitSliderValue();
     }
   }
   // Found on Stackoverflow
