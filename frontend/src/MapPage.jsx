@@ -56,7 +56,7 @@ export function MapPage() {
 
   useEffect(() => {
     const mapElement = document.getElementById("map");
-    fetch(`${API}/day/1/dep-times`)
+    fetch(`${API}/day/${selectedDay}/dep-times`)
       .then((response) => response.json())
       .then((times) => {
         setDepTimes(Array.isArray(times) ? times : []);
@@ -114,7 +114,7 @@ export function MapPage() {
 
   return (
     <div className=" relative h-screen w-full max-h-screen max-w-full overflow-hidden flex flex-col bg-linear-to-br from-gray-900 to-[#13162c]">
-      <PageHeader />
+      <PageHeader selectedDay={selectedDay} />
 
       <div className="overflow-auto pt-13 flex-1 min-h-0">
         <div id="map" className="mx-auto w-6/10 h-96 bg-[#13162c]"></div>

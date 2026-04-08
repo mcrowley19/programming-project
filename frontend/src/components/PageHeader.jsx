@@ -1,6 +1,6 @@
 import { Link, Route, Routes } from "react-router-dom";
 import { useState } from "react";
-export function PageHeader() {
+export function PageHeader(selectedDay) {
   const [results, setResults] = useState([]);
   const API = "http://127.0.0.1:5000";
   const handleSubmit = (e) => {
@@ -8,7 +8,7 @@ export function PageHeader() {
 
     const value = e.target.search.value;
 
-    fetch(`${API}/search/${day}/${value}`)
+    fetch(`${API}/search/${selectedDay}/${value}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -24,11 +24,16 @@ export function PageHeader() {
           name="search"
         />
       </form>
-      {results.map((item) => (
-        <div className="bg-white rounded-xl shadow p-4 h-32 flex items-center justify-center">
-          {item.name}
-        </div>
-      ))}
+      <div className="absolute top-11 right-30 z-50 w-[250px]">
+        {results.map((item, index) => (
+          <div
+            className="bg-white rounded-s shadow p-4 h-2 flex items-center justify-center "
+            key={index}
+          >
+            {item.ORIGIN_CITY_NAME} → {item.DEST_CITY_NAME}
+          </div>
+        ))}
+      </div>
 
       <div className="flex fixed top-3 right-3 z-50 gap-2 pt-2">
         <Link
