@@ -57,8 +57,11 @@ export function DaySlider({
         <div className=" flex justify-start text-white text-xl">
           {days.map((day, i) => (
             <button
-              onChange={() => {
+              key={day}
+              type="button"
+              onClick={() => {
                 setSelectedDay(i + 1);
+                setDaySetterShow(false);
               }}
               className=" w-20 justify-start border-r border-l border-t  hover:bg-white/10 border-white/20 bg-black/30  py-1 text-white text-sm"
             >

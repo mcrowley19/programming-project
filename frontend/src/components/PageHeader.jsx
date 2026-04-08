@@ -1,4 +1,4 @@
-import { Link, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 export function PageHeader(selectedDay) {
   const [results, setResults] = useState([]);
@@ -6,15 +6,17 @@ export function PageHeader(selectedDay) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const value = e.target.search.value;
+    const value = e.target.search.value.trim();
+    if (!value) return;
 
     fetch(`${API}/search/${selectedDay}/${value}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        setResults(data);
-      });
+        setResults(Array.isArray(data) ? data : []);
+      })
+      .catch(() => setResults([]));
   };
+
   return (
     <>
       <form onSubmit={handleSubmit}>

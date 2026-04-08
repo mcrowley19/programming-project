@@ -53,6 +53,7 @@ export function MapPage() {
   const [depTimes, setDepTimes] = useState([]);
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
   const [routes, setRoutes] = useState([]);
+  const [selectedDay, setSelectedDay] = useState(1);
 
   useEffect(() => {
     const mapElement = document.getElementById("map");
@@ -63,10 +64,9 @@ export function MapPage() {
         setSelectedTimeIndex(0);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [selectedDay]);
 
   const selectedDepTime = depTimes[selectedTimeIndex];
-  const [selectedDay, setSelectedDay] = useState(1);
   useEffect(() => {
     if (selectedDepTime === undefined) {
       setRoutes([]);
