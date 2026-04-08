@@ -19,7 +19,7 @@ API endpoints:
 - /day/<day>/<airport>/dep-times - returns a list of unique departure times for the given day and airport
 - /airport/<airport> - returns a list of flights originated from the given airport
 - /cancelled - returns a list of cancelled flights
-- /search/<search_string> - returns a list of flights with the search string in their ORIGIN_CITY_NAME, DEST_CITY_NAME, ORIGIN, DEST, or MKT_CARRIER
+- /search/<day>/<search_string> - returns flights on that day whose ORIGIN_CITY_NAME, DEST_CITY_NAME, ORIGIN, DEST, or MKT_CARRIER contain the search string
 
 Endpoints for Charts:
 - /charts/late-vs-ontime-carrier - returns a bar graph comparing late vs ontime flights by carrier
@@ -141,7 +141,8 @@ def flights_by_hour_graph():
 @app.route('/search/<day>/<search_string>')
 def search(day, search_string):
     """
-    This method takes in a string and returns all flights that contain that in their:
+    This method takes in a string and returns all flights on the given calendar day (same
+    meaning as /day/<day>) that contain that string in their:
     - ORIGIN_CITY_NAME
     - DEST_CITY_NAME
     - ORIGIN
@@ -149,11 +150,15 @@ def search(day, search_string):
     - MKT_CARRIER
     """
     string = search_string.lower()
-    search_results = df[df["ORIGIN_CITY_NAME"].str.lower().str.contains(string) |
-                            df["DEST_CITY_NAME"].str.lower().str.contains(string) |
-                            df["ORIGIN"].str.lower().str.contains(string) |
-                            df["DEST"].str.lower().str.contains(string) |
-                            df["MKT_CARRIER"].str.lower().str.contains(string)]
+    day_df = _day_df(day)
+    mask = (
+        day_df["ORIGIN_CITY_NAME"].str.lower().str.contains(string, regex=False, na=False)
+        | day_df["DEST_CITY_NAME"].str.lower().str.contains(string, regex=False, na=False)
+        | day_df["ORIGIN"].str.lower().str.contains(string, regex=False, na=False)
+        | day_df["DEST"].str.lower().str.contains(string, regex=False, na=False)
+        | day_df["MKT_CARRIER"].str.lower().str.contains(string, regex=False, na=False)
+    )
+    search_results = day_df[mask]
     return search_results.to_dict(orient="records")
 
 @app.route('/')
