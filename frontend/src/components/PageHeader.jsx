@@ -41,7 +41,7 @@ export function PageHeader(props) {
     <>
       <form
         onSubmit={submit}
-        className="fixed top-5 right-50 z-50 flex items-center gap-1"
+        className="fixed top-5 right-50 z-50 flex items-center gap-1 z-51"
       >
         <input
           ref={inputRef}
@@ -60,12 +60,9 @@ export function PageHeader(props) {
           </button>
         )}
       </form>
-      <div className="absolute top-11 right-30 z-50 w-[250px]">
+      <div className="absolute top-8 right-62.5 pl-1 z-40 rounded-xs w-[207px]">
         {results.map((item, index) => (
-          <div
-            className="bg-white rounded-s shadow p-4 h-2 flex items-center justify-center "
-            key={index}
-          >
+          <div className="bg-white pb-2 pt-5 pl-2 text-xs flex" key={index}>
             {item.ORIGIN_CITY_NAME} → {item.DEST_CITY_NAME}
           </div>
         ))}
