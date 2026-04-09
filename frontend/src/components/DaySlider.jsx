@@ -27,10 +27,8 @@ export function DaySlider({
   useEffect(() => {
     if (!timeProgress) return;
     const id = setInterval(() => {
-      setSelectedTimeIndex((prev) =>
-        prev >= maxTimeIndex ? prev : prev + 1,
-      );
-    }, 500);
+      setSelectedTimeIndex((prev) => (prev >= maxTimeIndex ? prev : prev + 1));
+    }, 750);
     return () => clearInterval(id);
   }, [timeProgress, maxTimeIndex, setSelectedTimeIndex]);
 
@@ -76,9 +74,7 @@ export function DaySlider({
           <label className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() =>
-                setTimeProgress((prev) => !prev)
-              }
+              onClick={() => setTimeProgress((prev) => !prev)}
               className="text-white hover:text-white/20 text-xl"
             >
               {timeProgress ? "⏸︎" : "▶"}
