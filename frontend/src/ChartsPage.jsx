@@ -46,7 +46,11 @@ export function ChartsPage() {
     setChartNum((prev) => (prev == 0 ? charts.length - 1 : prev - 1));
   }
   if (!chartData || !chartData.data) {
-    return <div className="text-white p-10">Loading Charts...</div>;
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-[#13162c]/85">
+        <div className="h-10 w-10 rounded-full border-2 border-white/25 border-t-white animate-spin" />
+      </div>
+    );
   }
 
   return (
