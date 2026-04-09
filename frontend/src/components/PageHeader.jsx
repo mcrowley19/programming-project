@@ -45,7 +45,7 @@ export function PageHeader(props) {
       >
         <input
           ref={inputRef}
-          className="flex gap-2 pl-3 bg-white rounded-3xl text-sm focus:outline-none"
+          className="flex gap-2 pl-3 pt-1 bg-white rounded-3xl text-sm focus:outline-none"
           placeholder="Search..."
           name="search"
           defaultValue={search}
@@ -62,7 +62,16 @@ export function PageHeader(props) {
       </form>
       <div className="absolute top-8 right-62.5 pl-1 z-40 rounded-xs w-[207px]">
         {results.map((item, index) => (
-          <div className="bg-white pb-2 pt-5 pl-2 text-xs flex" key={index}>
+          <div
+            className={
+              index == results.length - 1
+                ? "bg-white pb-2 pt-2 pl-2 text-xs flex rounded-b"
+                : index == 0
+                  ? "bg-white pb-2 pt-7 pl-2 text-xs flex"
+                  : "bg-white pb-2 pt-2 pl-2 text-xs flex"
+            }
+            key={index}
+          >
             {item.ORIGIN_CITY_NAME} → {item.DEST_CITY_NAME}
           </div>
         ))}
